@@ -1,4 +1,4 @@
-CREATE TABLE `accounts` (
+CREATE TABLE `users` (
     `id` varchar(36) NOT NULL,
     `fullname` varchar(255) DEFAULT NULL,
     `wallet_address` varchar(36) NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE `accounts` (
     `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
     `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
     PRIMARY KEY (`id`),
-    KEY `accounts_address_idx` (`wallet_address`)
+    KEY `users_address_idx` (`wallet_address`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `wallet` (
