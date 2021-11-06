@@ -25,9 +25,8 @@ CREATE TABLE `transactions` (
     `user_id` varchar(255) NOT NULL,
     `wallet_id` varchar(255) NOT NULL,
     `type` int(11) NOT NULL,
-    `description` text,
+    `package` int(11) NOT NULL,
     `credit` decimal(10,0) NOT NULL DEFAULT '0',
-    `debit` decimal(10,0) NOT NULL DEFAULT '0',
     `create_by` varchar(36) DEFAULT NULL,
     `status` int(11) NOT NULL DEFAULT '1',
     `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
@@ -38,7 +37,7 @@ CREATE TABLE `transactions` (
 
 CREATE TABLE `game_spin` (
     `id` varchar(36) NOT NULL,
-    `quantity` varchar(255) NOT NULL,
+    `package` varchar(255) NOT NULL,
     `status` int(11) NOT NULL DEFAULT '1',
     `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
     `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
@@ -47,7 +46,6 @@ CREATE TABLE `game_spin` (
 
 CREATE TABLE `game_spin_histories` (
     `id` varchar(36) NOT NULL,
-    `quantity` varchar(255) NOT NULL,
     `result` int(11) NOT NULL,
     `status` int(11) NOT NULL DEFAULT '1',
     `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
