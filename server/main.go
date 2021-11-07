@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"nolan/spin-game/components/appctx"
+	"nolan/spin-game/components/middleware"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -35,6 +36,7 @@ func main() {
 	appCtx := appctx.NewAppContext(db)
 
 	r := gin.Default()
+	r.Use(middleware.Recover(appCtx))
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",

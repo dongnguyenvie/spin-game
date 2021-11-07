@@ -1,9 +1,9 @@
 package usermodel
 
 import (
+	"errors"
 	"nolan/spin-game/components/common"
-
-	"github.com/ethereum/go-ethereum/crypto"
+	"nolan/spin-game/components/ethsigner"
 )
 
 type UserCreate struct {
@@ -15,14 +15,13 @@ type UserCreate struct {
 	Signature      string `json:"signature" gorm:"-"`
 }
 
-func (u *UserCreate) IsSignatureValid() bool {
-	data := []byte(u.MessageSigning)
-	hash := crypto.Keccak256Hash(data)
+func (u *UserCreate) IsSignatureValid() error {
+	signers := ethsigner.NewSigner()
+	isVerifying := signers.VerifySig(u.WalletAddress, u.Signature, []byte(u.MessageSigning))
 
-	sigPublicKey, err := crypto.Ecrecover(hash.Bytes(), []byte(u.Signature))
-	if err != nil || string(sigPublicKey[:]) != u.WalletAddress {
-		return false
+	if !isVerifying {
+		return common.ErrInvalidRequest(errors.New("signature is invalid"))
 	}
 
-	return true
+	return nil
 }
