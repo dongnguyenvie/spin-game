@@ -1,6 +1,11 @@
 package usermodel
 
-import "nolan/spin-game/components/common"
+import (
+	"errors"
+	"nolan/spin-game/components/common"
+)
+
+const EntityName = "User"
 
 type User struct {
 	common.SQLModel `json:",inline"`
@@ -20,3 +25,17 @@ func (u *User) GetUserId() int {
 func (u *User) GetEmail() string {
 	return u.Email
 }
+
+var (
+	ErrEmailOrPasswordInvalid = common.NewCustomError(
+		errors.New("email or password invalid"),
+		"email or password invalid",
+		"ErrUsernameOrPasswordInvalid",
+	)
+
+	ErrEmailExisted = common.NewCustomError(
+		errors.New("email has already existed"),
+		"email has already existed",
+		"ErrEmailExisted",
+	)
+)
