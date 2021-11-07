@@ -7,8 +7,7 @@ import (
 )
 
 type UserCreate struct {
-	common.SQLModel `json:",inline"`
-	User            `json:",inline"`
+	User `json:",inline"`
 	//
 	Password       string `json:"password" gorm:"column:password"`
 	MessageSigning string `json:"messageSign" gorm:"-"`

@@ -1,6 +1,7 @@
 package ginuser
 
 import (
+	"fmt"
 	"net/http"
 	"nolan/spin-game/components/appctx"
 	"nolan/spin-game/components/common"
@@ -21,6 +22,7 @@ func SignUp(ctx appctx.AppContext) gin.HandlerFunc {
 		if err := c.ShouldBind(&data); err != nil {
 			panic(err)
 		}
+		data.Nonce = common.RandomNonce()
 
 		if err := data.IsSignatureValid(); err != nil {
 			panic(err)
@@ -34,9 +36,12 @@ func SignUp(ctx appctx.AppContext) gin.HandlerFunc {
 
 		result, err := biz.Signup(c.Request.Context(), &data)
 		if err != nil {
+			fmt.Print("e======= >?>>>>>>")
 			panic(err)
 		}
 
-		c.JSON(http.StatusOK, common.SimpleSuccessResponse((*result).Id))
+		c.JSON(http.StatusOK, common.SimpleSuccessResponse(map[string]interface{}{
+			"id": (*result).Id,
+		}))
 	}
 }

@@ -1,9 +1,10 @@
 CREATE TABLE `users` (
     `id` int NOT NULL AUTO_INCREMENT,
-    `email` varchar(255) DEFAULT NULL,
-    `wallet_address` varchar(36) NOT NULL,
+    `email` varchar(255) DEFAULT NULL UNIQUE,
+    `wallet_address` varchar(50) NOT NULL UNIQUE,
     `password` varchar(255) NOT NULL,
     `status` int(11) NOT NULL DEFAULT '1',
+    `nonce` int(11) NOT NULL,
     `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
     `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
     PRIMARY KEY (`id`),

@@ -2,6 +2,8 @@ package userbiz
 
 import (
 	"context"
+	"errors"
+	"nolan/spin-game/components/common"
 	usermodel "nolan/spin-game/modules/users/model"
 )
 
@@ -27,10 +29,10 @@ func NewSignupBiz(signupRepo SignupRepo, hasher Hasher) *signupBiz {
 }
 
 func (biz *signupBiz) Signup(ctx context.Context, data *usermodel.UserCreate) (*usermodel.UserCreate, error) {
-	user, err := biz.signupRepo.FindUser(ctx, map[string]interface{}{"wallet_address": data.WalletAddress})
+	user, _ := biz.signupRepo.FindUser(ctx, map[string]interface{}{"wallet_address": data.WalletAddress})
 
 	if user != nil {
-		return nil, err
+		return nil, common.ErrEntityExisted(usermodel.UserCreate{}.TableName(), errors.New("user is exists"))
 	}
 
 	data.Password = biz.hasher.Hash(data.Password)

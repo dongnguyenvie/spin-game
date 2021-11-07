@@ -10,7 +10,7 @@ func (s *sqlStore) FindDataWithCondition(ctx context.Context, condition map[stri
 	var data usermodel.User
 	db := s.db.Table(usermodel.User{}.TableName())
 
-	if err := db.Where(condition).First(&data); err != nil {
+	if err := db.Where(condition).First(&data).Error; err != nil {
 		return nil, common.RecordNotFound
 	}
 

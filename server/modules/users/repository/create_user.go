@@ -7,7 +7,7 @@ import (
 )
 
 type CreateUserStorage interface {
-	FindDataWithCondition(ctx context.Context, conditions map[string]interface{}, moreInfo ...string) (*usermodel.User, error)
+	FindDataWithCondition(ctx context.Context, conditions map[string]interface{}, moreKeys ...string) (*usermodel.User, error)
 	Create(ctx context.Context, data *usermodel.UserCreate) error
 }
 

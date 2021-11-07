@@ -21,6 +21,7 @@ func setupMainRoute(appCtx appctx.AppContext, group *gin.RouterGroup) {
 	{
 		userGr := group.Group("/users")
 		userGr.GET("", ginuser.ListUser(appCtx))
+		userGr.GET("/nonce/:addrs", ginuser.GetNonce(appCtx))
 	}
 
 	{

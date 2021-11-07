@@ -12,6 +12,7 @@ type User struct {
 	Email           string `json:"email" gorm:"column:email;"`
 	WalletAddress   string `json:"walletAddress" gorm:"column:wallet_address"`
 	Password        string `json:"-" gorm:"column:password;"`
+	Nonce           int    `json:"nonce" gorm:"column:nonce"`
 }
 
 func (User) TableName() string {
