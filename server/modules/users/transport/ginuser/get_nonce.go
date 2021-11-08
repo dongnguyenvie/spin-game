@@ -17,7 +17,7 @@ func GetNonce(ctx appctx.AppContext) gin.HandlerFunc {
 
 		db := ctx.GetMaiDBConnection()
 		storage := userstorage.NewSQLStore(db)
-		userRepo := userrepo.NewUserNonceRepo(storage)
+		userRepo := userrepo.NewUserRepo(storage)
 		userNonceBiz := userbiz.NewGetUserNonceBiz(userRepo)
 		nonce := userNonceBiz.GetUserNonce(c.Request.Context(), walletAddrs)
 

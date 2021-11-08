@@ -1,7 +1,6 @@
 package ginuser
 
 import (
-	"fmt"
 	"net/http"
 	"nolan/spin-game/components/appctx"
 	"nolan/spin-game/components/common"
@@ -30,13 +29,12 @@ func SignUp(ctx appctx.AppContext) gin.HandlerFunc {
 
 		md5 := hasher.NewMd5Hash()
 		storage := userstorage.NewSQLStore(db)
-		userRepo := userrepo.NewCreateUserRepo(storage)
+		userRepo := userrepo.NewUserRepo(storage)
 
 		biz := userbiz.NewSignupBiz(userRepo, md5)
 
 		result, err := biz.Signup(c.Request.Context(), &data)
 		if err != nil {
-			fmt.Print("e======= >?>>>>>>")
 			panic(err)
 		}
 

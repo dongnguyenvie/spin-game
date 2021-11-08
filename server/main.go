@@ -25,6 +25,7 @@ func main() {
 	DatabasePassword := os.Getenv("DATABASE_PASSWORD")
 	DatabaseName := os.Getenv("DATABASE_NAME")
 	DatabasePort := os.Getenv("DATABASE_PORT")
+	SecretKey := os.Getenv("SECRET_KEY")
 	dsn := DatabaseUsername + ":" + DatabasePassword + "@tcp(" + DatabaseHost + ":" + DatabasePort + ")/" + DatabaseName + "?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
@@ -33,7 +34,7 @@ func main() {
 
 	port := os.Getenv("PORT")
 
-	appCtx := appctx.NewAppContext(db)
+	appCtx := appctx.NewAppContext(db, SecretKey)
 
 	r := gin.Default()
 	r.Use(middleware.Recover(appCtx))
