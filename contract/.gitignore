@@ -20,3 +20,4 @@ packages/contract/dist
 
 .secret
 .key
+.env

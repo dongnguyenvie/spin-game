@@ -1,8 +1,5 @@
 # Contract
 
-#### put your api key into ".key" file
-#### put your mnemonic into ".secret" file
-
 ```
 npx truffle compile
 npx truffle deploy --network rinkeby --debug

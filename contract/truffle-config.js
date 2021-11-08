@@ -17,14 +17,11 @@
  * phrase from a file you've .gitignored so it doesn't accidentally become public.
  *
  */
-
+require("dotenv").config();
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 //
 const fs = require("fs");
-const mnemonic = fs.readFileSync(".secret").toString().trim();
-const apiKey = fs.readFileSync(".key").toString();
-
-console.log("xx", apiKey);
+const mnemonic = process.env.MNEMONIC;
 
 module.exports = {
   /**
@@ -48,7 +45,7 @@ module.exports = {
       provider: () =>
         new HDWalletProvider(
           mnemonic,
-          `https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161`
+          `https://rinkeby.infura.io/v3/${process.env.INFURA_PROJECT_ID}`
         ),
       network_id: 4, // Ropsten's id
       gas: 5500000, // Ropsten has a lower block limit than mainnet
@@ -130,6 +127,6 @@ module.exports = {
   // }
   plugins: ["truffle-plugin-verify"],
   api_keys: {
-    etherscan: "PJJJFKRN83E26XWIT9Z7XT4WIUDKCNA2SZ",
+    etherscan: process.env.ETHERSCAN_API_KEY,
   },
 };

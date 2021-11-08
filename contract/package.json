@@ -8,6 +8,7 @@
     "flat": "truffle-flattener contracts/Spin.sol"
   },
   "devDependencies": {
+    "dotenv": "^10.0.0",
     "truffle-plugin-verify": "^0.5.17"
   }
 }
