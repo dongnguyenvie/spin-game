@@ -2,6 +2,7 @@ package main
 
 import (
 	"nolan/spin-game/components/appctx"
+	"nolan/spin-game/components/middleware"
 	"nolan/spin-game/modules/game_spin/transport/gingamespin"
 	"nolan/spin-game/modules/transactions/transport/gintransaction"
 	"nolan/spin-game/modules/users/transport/ginuser"
@@ -15,7 +16,7 @@ func setupMainRoute(appCtx appctx.AppContext, group *gin.RouterGroup) {
 	{
 		group.POST("/signin", ginuser.SignIn(appCtx))
 		group.POST("/signup", ginuser.SignUp(appCtx))
-		group.GET("/profile", ginuser.Profile(appCtx))
+		group.GET("/profile", middleware.Guard(appCtx), ginuser.Profile(appCtx))
 	}
 
 	{
