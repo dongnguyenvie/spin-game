@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.3.2",
+    "@truffle/hdwallet-provider": "^1.6.0",
+    "truffle-flattener": "^1.5.0"
+  },
+  "scripts": {
+    "flat": "truffle-flattener contracts/Spin.sol"
+  },
+  "devDependencies": {
+    "truffle-plugin-verify": "^0.5.17"
+  }
+}
