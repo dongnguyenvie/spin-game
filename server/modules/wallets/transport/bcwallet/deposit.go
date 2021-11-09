@@ -5,10 +5,11 @@ import (
 	"fmt"
 	"log"
 	"nolan/spin-game/components/appctx"
+	"nolan/spin-game/components/common"
+	contracts "nolan/spin-game/components/constracts"
 
-	"github.com/ethereum/go-ethereum"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	goecommon "github.com/ethereum/go-ethereum/common"
 )
 
 func Deposit(appctx appctx.AppContext) {
@@ -16,32 +17,36 @@ func Deposit(appctx appctx.AppContext) {
 
 	smAddress := appctx.GetSmartContractAddr()
 
-	contractAddress := common.HexToAddress(smAddress)
-	query := ethereum.FilterQuery{
-		Addresses: []common.Address{contractAddress},
-	}
-
-	logs := make(chan types.Log)
-
-	sub, err := client.SubscribeFilterLogs(context.Background(), query, logs)
+	contractAddress := goecommon.HexToAddress(smAddress)
+	spinContract, err := contracts.NewSpincontract(contractAddress, client)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	go func() {
-		// TODO: handle event from contract, maybe deposit, or somthing
+		defer common.AppRecover()
+
+		logs := make(chan *contracts.SpincontractDeposit)
+		sub, err := spinContract.WatchDeposit(&bind.WatchOpts{Context: context.Background()}, logs)
+		if err != nil {
+			log.Fatal(err)
+		}
+
 		for {
 			select {
 			case err := <-sub.Err():
 				log.Fatal(err)
 			case vLog := <-logs:
-				fmt.Println(vLog.Address) // pointer to event log
-				// var d []interface{}
-				// if err := json.Unmarshal(vLog.Data, &d); err != nil {
-				// 	panic(err)
-				// }
-				fmt.Printf("%+v\n", vLog)
-				fmt.Printf("%+v\n", string(vLog.Data))
+				fmt.Printf("%v\n", vLog.Raw)
+				tx := vLog.Raw.TxHash.String()
+
+				if vLog.Raw.Removed {
+					// TODO: recovery balance when the tsx is failed
+				}
+				// TODO: handle update balance by wallet address
+				fmt.Println("tx", tx)
+				fmt.Println("wallet_address", vLog.Sender) // pointer to event log
+				fmt.Println("amount", vLog.Amount)         // pointer to event log
 			}
 		}
 	}()
