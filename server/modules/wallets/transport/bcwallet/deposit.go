@@ -28,13 +28,21 @@ func Deposit(appctx appctx.AppContext) {
 		log.Fatal(err)
 	}
 
-	// TODO: handle event from contract, maybe deposit, or somthing
-	for {
-		select {
-		case err := <-sub.Err():
-			log.Fatal(err)
-		case vLog := <-logs:
-			fmt.Println(vLog) // pointer to event log
+	go func() {
+		// TODO: handle event from contract, maybe deposit, or somthing
+		for {
+			select {
+			case err := <-sub.Err():
+				log.Fatal(err)
+			case vLog := <-logs:
+				fmt.Println(vLog.Address) // pointer to event log
+				// var d []interface{}
+				// if err := json.Unmarshal(vLog.Data, &d); err != nil {
+				// 	panic(err)
+				// }
+				fmt.Printf("%+v\n", vLog)
+				fmt.Printf("%+v\n", string(vLog.Data))
+			}
 		}
-	}
+	}()
 }

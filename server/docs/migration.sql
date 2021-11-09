@@ -13,6 +13,7 @@ CREATE TABLE `users` (
 
 CREATE TABLE `wallet` (
     `id` int NOT NULL AUTO_INCREMENT,
+    `user_id` int NOT NULL,
     `balance` int(11) NOT NULL DEFAULT '1',
     `status` int(11) NOT NULL DEFAULT '1',
     `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
