@@ -15,6 +15,11 @@ const (
 	ChannelCreateUser = "ChannelCreateUser"
 )
 
+const (
+	StatusLocked = 0
+	StatusActive = 1
+)
+
 type Requester interface {
 	GetUserId() int
 	GetEmail() string

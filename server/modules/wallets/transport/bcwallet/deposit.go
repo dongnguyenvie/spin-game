@@ -42,6 +42,7 @@ func Deposit(appctx appctx.AppContext) {
 
 				if vLog.Raw.Removed {
 					// TODO: recovery balance when the tsx is failed
+					return
 				}
 				// TODO: handle update balance by wallet address
 				fmt.Println("tx", tx)

@@ -29,7 +29,7 @@ func CreateWallet(appctx appctx.AppContext) {
 			walletCreate := walletmodel.WalletCreate{
 				Balance: 0,
 				UserId:  userCreated.Id,
-				Status:  1,
+				Status:  common.StatusActive,
 			}
 			wallet, err := walletBiz.CreateWallet(context.Background(), &walletCreate)
 
@@ -37,7 +37,7 @@ func CreateWallet(appctx appctx.AppContext) {
 				panic(err)
 			}
 
-			fmt.Printf("userid:%d, walletId:%d", userCreated.Id, wallet.Id)
+			fmt.Printf("create wallet:: userid:%d, walletId:%d \n", userCreated.Id, wallet.Id)
 		}
 	}()
 }
