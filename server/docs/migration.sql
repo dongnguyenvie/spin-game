@@ -11,10 +11,10 @@ CREATE TABLE `users` (
     KEY `users_address_idx` (`wallet_address`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `wallet` (
+CREATE TABLE `wallets` (
     `id` int NOT NULL AUTO_INCREMENT,
     `user_id` int NOT NULL,
-    `balance` int(11) NOT NULL DEFAULT '1',
+    `balance` decimal(10,0) NOT NULL DEFAULT '0',
     `status` int(11) NOT NULL DEFAULT '1',
     `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
     `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),

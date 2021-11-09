@@ -5,6 +5,9 @@ import (
 	"log"
 	"nolan/spin-game/components/appctx"
 	"nolan/spin-game/components/middleware"
+	"nolan/spin-game/components/pubsub"
+	local_pubsub "nolan/spin-game/components/pubsub/localpb"
+	"nolan/spin-game/modules/wallets/transport/pbwallet"
 	"os"
 
 	"github.com/ethereum/go-ethereum/ethclient"
@@ -42,9 +45,17 @@ func main() {
 		fmt.Println(err)
 	}
 
-	appCtx := appctx.NewAppContext(db, ethClient, SecretKey, SmartContractAddr)
+	var localPubsub pubsub.PubSub = local_pubsub.NewPubSub()
 
-	setupInfura(appCtx)
+	appCtx := appctx.NewAppContext(db, ethClient, localPubsub, SecretKey, SmartContractAddr)
+
+	{
+		setupInfura(appCtx)
+	}
+
+	{
+		pbwallet.CreateWallet(appCtx)
+	}
 
 	r := gin.Default()
 

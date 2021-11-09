@@ -12,8 +12,7 @@ const (
 )
 
 const (
-	TopicUserLikeRestaurant    = "TopicUserLikeRestaurant"
-	TopicUserDislikeRestaurant = "TopicUserDislikeRestaurant"
+	ChannelCreateUser = "ChannelCreateUser"
 )
 
 type Requester interface {

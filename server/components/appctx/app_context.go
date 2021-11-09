@@ -1,6 +1,8 @@
 package appctx
 
 import (
+	"nolan/spin-game/components/pubsub"
+
 	"github.com/ethereum/go-ethereum/ethclient"
 	"gorm.io/gorm"
 )
@@ -10,6 +12,7 @@ type AppContext interface {
 	GetSecretKey() string
 	GetEthClient() *ethclient.Client
 	GetSmartContractAddr() string
+	GetPubsub() pubsub.PubSub
 }
 
 type appCtx struct {
@@ -17,14 +20,16 @@ type appCtx struct {
 	secret    string
 	ethClient *ethclient.Client
 	smAddrs   string
+	pubsub    pubsub.PubSub
 }
 
-func NewAppContext(db *gorm.DB, ethClient *ethclient.Client, secretKey string, smartContractAddrs string) *appCtx {
+func NewAppContext(db *gorm.DB, ethClient *ethclient.Client, pubsub pubsub.PubSub, secretKey string, smartContractAddrs string) *appCtx {
 	return &appCtx{
 		db:        db,
 		ethClient: ethClient,
 		secret:    secretKey,
 		smAddrs:   smartContractAddrs,
+		pubsub:    pubsub,
 	}
 }
 
@@ -42,4 +47,8 @@ func (ctx *appCtx) GetSecretKey() string {
 
 func (ctx *appCtx) GetSmartContractAddr() string {
 	return ctx.smAddrs
+}
+
+func (ctx *appCtx) GetPubsub() pubsub.PubSub {
+	return ctx.pubsub
 }
