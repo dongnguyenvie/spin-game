@@ -1,4 +1,4 @@
-package walletmodel
+package transactionmodel
 
 import (
 	"nolan/spin-game/components/common"
@@ -8,16 +8,16 @@ const EntityName = "Transactions"
 
 type Transaction struct {
 	common.SQLModel `json:",inline"`
-	Tx              string `json:"tx" gorm:"column:balance;"`
-	Type            int    `json:"type" gorm:"column:balance;"`
-	Credit          int    `json:"credit" gorm:"column:balance;"`
-	Debit           int    `json:"debit" gorm:"column:status;"`
-	CreateBy        *int   `json:"create_by" gorm:"column:user_id"`
-	Status          int    `json:"status" gorm:"column:user_id"`
-	Package         int    `json:"package" gorm:"column:user_id"`
+	Tx              string `json:"tx" gorm:"column:tx;"`
+	Type            int    `json:"type" gorm:"column:type;"`
+	Credit          int    `json:"credit" gorm:"column:credit;"`
+	Debit           int    `json:"debit" gorm:"column:debit;"`
+	CreateBy        *int   `json:"createBy" gorm:"column:create_by"`
+	Status          int    `json:"status" gorm:"column:status"`
+	Package         int    `json:"package" gorm:"column:package"`
 
-	UserId   int `json:"user_id" gorm:"column:balance;"`
-	WalletId int `json:"wallet_id" gorm:"column:balance;"`
+	UserId   int `json:"userId" gorm:"column:user_id;"`
+	WalletId int `json:"walletId" gorm:"column:wallet_id;"`
 }
 
 func (Transaction) TableName() string {
