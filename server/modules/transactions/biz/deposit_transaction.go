@@ -15,9 +15,9 @@ func NewDepositBiz(depositRepo DepositRepo) *depositBiz {
 	return &depositBiz{depositRepo: depositRepo}
 }
 
-func (biz *depositBiz) DepositTransaction(ctx context.Context, data *transactionmodel.Transaction) (*transactionmodel.Transaction, error) {
+func (biz *depositBiz) DepositTransaction(ctx context.Context, data *transactionmodel.TransactionDeposit) (*transactionmodel.Transaction, error) {
 	// TODO: create tsx with tx from blockchain
-	return data, nil
+	return nil, nil
 }
 
 func (biz *depositBiz) UpdateTransactionStatus(ctx context.Context, data *transactionmodel.Transaction) error {

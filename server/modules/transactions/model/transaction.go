@@ -10,7 +10,7 @@ type Transaction struct {
 	common.SQLModel `json:",inline"`
 	Tx              string `json:"tx" gorm:"column:tx;"`
 	Type            int    `json:"type" gorm:"column:type;"`
-	Credit          int    `json:"credit" gorm:"column:credit;"`
+	Credit          int64  `json:"credit" gorm:"column:credit;"`
 	Debit           int    `json:"debit" gorm:"column:debit;"`
 	CreateBy        *int   `json:"createBy" gorm:"column:create_by"`
 	Status          int    `json:"status" gorm:"column:status"`
@@ -28,4 +28,13 @@ func (u *Transaction) GetId() int {
 	return u.Id
 }
 
-var ()
+var (
+	Deposit    = 0
+	BuyPackage = 1
+)
+
+var (
+	Waiting      = 0
+	Successfully = 1
+	Failed       = 2
+)

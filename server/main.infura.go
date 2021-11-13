@@ -7,4 +7,5 @@ import (
 
 func setupInfura(appCtx appctx.AppContext) {
 	bcwallet.Deposit(appCtx)
+	// bctransaction.Deposit(appCtx)
 }

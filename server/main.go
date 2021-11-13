@@ -7,7 +7,6 @@ import (
 	"nolan/spin-game/components/middleware"
 	"nolan/spin-game/components/pubsub"
 	local_pubsub "nolan/spin-game/components/pubsub/localpb"
-	"nolan/spin-game/modules/wallets/transport/pbwallet"
 	"os"
 
 	"github.com/ethereum/go-ethereum/ethclient"
@@ -54,7 +53,7 @@ func main() {
 	}
 
 	{
-		pbwallet.CreateWallet(appCtx)
+		setupPubsubRoute(appCtx)
 	}
 
 	r := gin.Default()

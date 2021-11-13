@@ -13,6 +13,8 @@ const (
 
 const (
 	ChannelCreateUser = "ChannelCreateUser"
+	ChannelDepositBC  = "ChannelDepositBC"
+	ChannelNewTx      = "ChannelNewTx"
 )
 
 const (
