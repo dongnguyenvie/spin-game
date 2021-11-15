@@ -10,6 +10,7 @@ type WalletStorage interface {
 	ListDataWithCondition(ctx context.Context, filter *walletmodel.Filter, paging *common.Paging, moreKeys ...string) ([]walletmodel.Wallet, error)
 	FindDataWithCondition(ctx context.Context, condition map[string]interface{}, moreKeys ...string) (*walletmodel.Wallet, error)
 	Create(ctx context.Context, data *walletmodel.WalletCreate) error
+	UpdateBalance(ctx context.Context, condition map[string]interface{}, amount int) error
 }
 
 type walletRepo struct {

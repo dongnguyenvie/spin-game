@@ -34,7 +34,7 @@ func RequestDeposit(appctx appctx.AppContext) {
 				Credit:   userDeposit.Amount.Int64(),
 				Debit:    0,
 				WalletId: userDeposit.WalletId,
-				Type:     transactionmodel.Deposit,
+				Type:     common.DepositType,
 				Status:   transactionmodel.Waiting,
 			}
 			tx, err := txBiz.DepositTransaction(context.Background(), &newTx)

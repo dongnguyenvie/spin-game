@@ -28,10 +28,10 @@ func (u *Transaction) GetId() int {
 	return u.Id
 }
 
-var (
-	Deposit    = 0
-	BuyPackage = 1
-)
+// var (
+// 	Deposit    = 0
+// 	BuyPackage = 1
+// )
 
 var (
 	Waiting      = 0

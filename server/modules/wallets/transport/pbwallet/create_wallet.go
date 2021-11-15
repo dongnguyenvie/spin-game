@@ -19,7 +19,7 @@ func CreateWallet(appctx appctx.AppContext) {
 	db := appctx.GetMaiDBConnection()
 	walletStorage := walletstorage.NewSQLStore(db)
 	walletRepo := walletrepo.NewWalletRepo(walletStorage)
-	walletBiz := walletbiz.NewSigninBiz(walletRepo)
+	walletBiz := walletbiz.NewCreateWalletBiz(walletRepo)
 
 	go func() {
 		defer common.AppRecover()

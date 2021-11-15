@@ -16,7 +16,7 @@ type createWalletBiz struct {
 	walletRepo CreateWalletRepo
 }
 
-func NewSigninBiz(walletRepo CreateWalletRepo) *createWalletBiz {
+func NewCreateWalletBiz(walletRepo CreateWalletRepo) *createWalletBiz {
 	return &createWalletBiz{walletRepo: walletRepo}
 }
 

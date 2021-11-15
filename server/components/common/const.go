@@ -17,6 +17,11 @@ const (
 	ChannelNewTx      = "ChannelNewTx"
 )
 
+var (
+	DepositType    = 0
+	BuyPackageType = 1
+)
+
 const (
 	StatusLocked = 0
 	StatusActive = 1
