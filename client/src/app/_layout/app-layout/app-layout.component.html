@@ -1,0 +1,9 @@
+<app-header></app-header>
+<div class="flex flex-col md:flex-row mt-12">
+  <div class="bg-gray-800 shadow-xl h-16 fixed bottom-0 md:relative md:h-screen z-10 w-full md:w-48">
+    <app-navigation></app-navigation>
+  </div>
+  <div class="main-content flex-1  bg-gray-100 mt-5">
+    <router-outlet></router-outlet>
+  </div>
+</div>
