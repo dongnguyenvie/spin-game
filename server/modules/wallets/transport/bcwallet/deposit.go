@@ -51,8 +51,6 @@ func Deposit(appctx appctx.AppContext) {
 					// TODO: recovery balance when the tsx is failed
 					return
 				}
-				// TODO: handle update balance by wallet address
-
 				result, error := walletStore.FindDataWithCondition(context.Background(), map[string]interface{}{"wallet_address": vLog.Sender.String()})
 				if error != nil {
 					panic("wallet address not found")

@@ -4,6 +4,7 @@ import (
 	"context"
 	"nolan/spin-game/components/appctx"
 	"nolan/spin-game/components/common"
+	"nolan/spin-game/components/pubsub"
 	walletbiz "nolan/spin-game/modules/wallets/biz"
 	walletrepo "nolan/spin-game/modules/wallets/repository"
 	walletstorage "nolan/spin-game/modules/wallets/storage"
@@ -29,7 +30,10 @@ func DepositWallet(appctx appctx.AppContext) {
 				if err != nil {
 					panic(err)
 				}
-				// TODO: create publish message update transaction status after wallet is updated
+
+				// Update status transaction after deposit wallet is success
+				newMessage := pubsub.NewMessage(tx.Id)
+				pb.Publish(context.Background(), common.ChannelTxDepositSuccess, newMessage)
 			}
 		}
 	}()

@@ -12,9 +12,10 @@ const (
 )
 
 const (
-	ChannelCreateUser = "ChannelCreateUser"
-	ChannelDepositBC  = "ChannelDepositBC"
-	ChannelNewTx      = "ChannelNewTx"
+	ChannelCreateUser       = "ChannelCreateUser"
+	ChannelDepositBC        = "ChannelDepositBC"
+	ChannelNewTx            = "ChannelNewTx"
+	ChannelTxDepositSuccess = "ChannelDepositSuccess"
 )
 
 var (

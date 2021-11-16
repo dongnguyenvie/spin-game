@@ -8,28 +8,25 @@ import (
 
 	transactionbiz "nolan/spin-game/modules/transactions/biz"
 	transactionmodel "nolan/spin-game/modules/transactions/model"
-	transactionrepo "nolan/spin-game/modules/transactions/repository"
 	transactionstorage "nolan/spin-game/modules/transactions/storage"
 )
 
 func RequestDeposit(appctx appctx.AppContext) {
-	// TODO: subscrible channel deposit and create a transaction.
-
 	pb := appctx.GetPubsub()
 
 	ch, _ := pb.Subscribe(context.Background(), common.ChannelDepositBC)
 
 	db := appctx.GetMaiDBConnection()
 	txstorage := transactionstorage.NewSQLStore(db)
-	txRepo := transactionrepo.NewTransactionRepo(txstorage)
-	txBiz := transactionbiz.NewDepositBiz(txRepo)
+	// txRepo := transactionrepo.NewTransactionRepo(txstorage)
+	txBiz := transactionbiz.NewDepositingBiz(txstorage)
 
 	go func() {
 		defer common.AppRecover()
 
 		for {
 			userDeposit := (<-ch).Data().(common.UserDeposit)
-			newTx := transactionmodel.TransactionDeposit{
+			newTx := transactionmodel.Transaction{
 				Tx:       userDeposit.Tx,
 				Credit:   userDeposit.Amount.Int64(),
 				Debit:    0,
@@ -37,11 +34,12 @@ func RequestDeposit(appctx appctx.AppContext) {
 				Type:     common.DepositType,
 				Status:   transactionmodel.Waiting,
 			}
-			tx, err := txBiz.DepositTransaction(context.Background(), &newTx)
+			tx, err := txBiz.StartDepositingTx(context.Background(), &newTx)
 
 			if err != nil {
 				panic("create tx failed")
 			}
+
 			newTxEvent := pubsub.NewMessage(common.NewTx{
 				Id:       tx.Id,
 				Type:     tx.Type,

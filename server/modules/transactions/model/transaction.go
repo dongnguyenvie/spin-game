@@ -12,9 +12,9 @@ type Transaction struct {
 	Type            int    `json:"type" gorm:"column:type;"`
 	Credit          int64  `json:"credit" gorm:"column:credit;"`
 	Debit           int    `json:"debit" gorm:"column:debit;"`
-	CreateBy        *int   `json:"createBy" gorm:"column:create_by"`
-	Status          int    `json:"status" gorm:"column:status"`
+	CreateBy        *int   `json:"createBy,omitempty" gorm:"column:create_by"`
 	Package         int    `json:"package" gorm:"column:package"`
+	Status          int    `json:"status" gorm:"column:status;default:1;"`
 
 	UserId   int `json:"userId" gorm:"column:user_id;"`
 	WalletId int `json:"walletId" gorm:"column:wallet_id;"`
@@ -34,7 +34,7 @@ func (u *Transaction) GetId() int {
 // )
 
 var (
-	Waiting      = 0
-	Successfully = 1
-	Failed       = 2
+	Waiting      = 3
+	Successfully = 4
+	Failed       = 5
 )
