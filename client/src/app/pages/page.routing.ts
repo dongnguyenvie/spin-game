@@ -7,6 +7,11 @@ const routes: Routes = [
     component: AppLayoutComponent,
     children: [
       {
+        path: '',
+        loadChildren: () =>
+          import('./home-page/home-page.module').then((m) => m.HomePageModule),
+      },
+      {
         path: 'sign-in',
         loadChildren: () =>
           import('./signin-page/signin-page.module').then(

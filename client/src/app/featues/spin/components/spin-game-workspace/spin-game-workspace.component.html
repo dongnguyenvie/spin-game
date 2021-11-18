@@ -1,0 +1,33 @@
+<div class="flex items-center justify-center bg-indigo-900 h-screen">
+  <div class="wheel-container">
+    <div id="wheel" class="wheel" [style.transform]="'rotate(' + (wheelRotation ? wheelRotation : 0) + 'deg)'">
+      <div>
+        <span class="span1">
+          <p>😊 500%</p>
+        </span>
+        <span class="span2">
+          <p>😝</p>
+        </span>
+        <span class="span3">
+          <p>😍</p>
+        </span>
+        <span class="span4">
+          <p>😎</p>
+        </span>
+
+        <span class="span5">
+          <p>🍩</p>
+        </span>
+        <span class="span6">
+          <p>🍭</p>
+        </span>
+        <span class="span7">
+          <p>🍰</p>
+        </span>
+        <span class="span8">
+          <p>🍬</p>
+        </span>
+      </div>
+    </div>
+    <button class="absolute" class="spin" (click)="rotate()" >SPIN</button>
+  </div>
