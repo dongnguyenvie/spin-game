@@ -10,6 +10,8 @@ func setupPubsubRoute(appCtx appctx.AppContext) {
 
 	{
 		pbwallet.CreateWallet(appCtx)
+		pbwallet.DepositWallet(appCtx)
+
 	}
 
 	{
