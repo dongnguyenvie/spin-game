@@ -16,6 +16,7 @@ func setupPubsubRoute(appCtx appctx.AppContext) {
 
 	{
 		pbtransaction.RequestDeposit(appCtx)
+		pbtransaction.DepositSuccessfully(appCtx)
 	}
 
 }

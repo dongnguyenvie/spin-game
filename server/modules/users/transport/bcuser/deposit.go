@@ -1,4 +1,4 @@
-package bcwallet
+package bcuser
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 	"nolan/spin-game/components/common"
 	contracts "nolan/spin-game/components/constracts"
 	"nolan/spin-game/components/pubsub"
-	walletstorage "nolan/spin-game/modules/wallets/storage"
+	userstorage "nolan/spin-game/modules/users/storage"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	goecommon "github.com/ethereum/go-ethereum/common"
@@ -27,7 +27,7 @@ func Deposit(appctx appctx.AppContext) {
 	}
 
 	db := appctx.GetMaiDBConnection()
-	walletStore := walletstorage.NewSQLStore(db)
+	userStore := userstorage.NewSQLStore(db)
 	// walletRepo := walletrepo.NewWalletRepo(walletStore)
 
 	go func() {
@@ -51,15 +51,16 @@ func Deposit(appctx appctx.AppContext) {
 					// TODO: recovery balance when the tsx is failed
 					return
 				}
-				result, error := walletStore.FindDataWithCondition(context.Background(), map[string]interface{}{"wallet_address": vLog.Sender.String()})
+				result, error := userStore.FindDataWithCondition(context.Background(), map[string]interface{}{"wallet_address": vLog.Sender.String()})
+
 				if error != nil {
 					panic("wallet address not found")
 				}
 
 				message := pubsub.NewMessage(common.UserDeposit{
-					Tx:       tx,
-					WalletId: result.Id,
-					Amount:   vLog.Amount,
+					Tx:     tx,
+					UserId: result.Id,
+					Amount: vLog.Amount,
 				})
 				pb.Publish(context.Background(), common.ChannelDepositBC, message)
 

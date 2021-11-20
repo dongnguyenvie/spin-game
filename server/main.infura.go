@@ -2,10 +2,9 @@ package main
 
 import (
 	"nolan/spin-game/components/appctx"
-	"nolan/spin-game/modules/wallets/transport/bcwallet"
+	"nolan/spin-game/modules/users/transport/bcuser"
 )
 
 func setupInfura(appCtx appctx.AppContext) {
-	bcwallet.Deposit(appCtx)
-	// bctransaction.Deposit(appCtx)
+	bcuser.Deposit(appCtx)
 }

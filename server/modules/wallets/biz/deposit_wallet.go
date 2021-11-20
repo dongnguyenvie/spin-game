@@ -9,7 +9,7 @@ import (
 
 type DepositWalletRepo interface {
 	FindWallet(ctx context.Context, conditions map[string]interface{}) (*walletmodel.Wallet, error)
-	UpdateBalance(ctx context.Context, condition map[string]interface{}, amount int) error
+	Deposit(ctx context.Context, condition map[string]interface{}, amount int) error
 }
 
 type depositWalletBiz struct {
@@ -20,14 +20,14 @@ func NewDepositBiz(walletRepo DepositWalletRepo) *depositWalletBiz {
 	return &depositWalletBiz{walletRepo: walletRepo}
 }
 
-func (biz *depositWalletBiz) DepositWallet(ctx context.Context, walletId int, amount int) error {
-	wallet, _ := biz.walletRepo.FindWallet(ctx, map[string]interface{}{"id": walletId})
+func (biz *depositWalletBiz) DepositWallet(ctx context.Context, userId int, amount int) error {
+	wallet, _ := biz.walletRepo.FindWallet(ctx, map[string]interface{}{"user_id": userId})
 
-	if wallet != nil {
-		return common.ErrEntityExisted(walletmodel.EntityName, errors.New("wallet is exists"))
+	if wallet == nil {
+		return common.ErrEntityExisted(walletmodel.EntityName, errors.New("wallet is not found"))
 	}
 
-	err := biz.walletRepo.UpdateBalance(ctx, map[string]interface{}{"id": walletId}, amount)
+	err := biz.walletRepo.Deposit(ctx, map[string]interface{}{"id": wallet.Id}, amount)
 
 	if err != nil {
 		return err

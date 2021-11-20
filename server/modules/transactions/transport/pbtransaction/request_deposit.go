@@ -27,12 +27,12 @@ func RequestDeposit(appctx appctx.AppContext) {
 		for {
 			userDeposit := (<-ch).Data().(common.UserDeposit)
 			newTx := transactionmodel.Transaction{
-				Tx:       userDeposit.Tx,
-				Credit:   userDeposit.Amount.Int64(),
-				Debit:    0,
-				WalletId: userDeposit.WalletId,
-				Type:     common.DepositType,
-				Status:   transactionmodel.Waiting,
+				Tx:     userDeposit.Tx,
+				Credit: userDeposit.Amount.Int64(),
+				Debit:  0,
+				UserId: userDeposit.UserId,
+				Type:   common.DepositType,
+				Status: transactionmodel.Waiting,
 			}
 			tx, err := txBiz.StartDepositingTx(context.Background(), &newTx)
 
@@ -41,12 +41,12 @@ func RequestDeposit(appctx appctx.AppContext) {
 			}
 
 			newTxEvent := pubsub.NewMessage(common.NewTx{
-				Id:       tx.Id,
-				Type:     tx.Type,
-				Status:   tx.Status,
-				Debit:    0,
-				Credit:   int(tx.Credit),
-				WalletId: tx.WalletId,
+				Id:     tx.Id,
+				Type:   tx.Type,
+				Status: tx.Status,
+				Debit:  0,
+				Credit: int(tx.Credit),
+				UserId: userDeposit.UserId,
 			})
 			pb.Publish(context.Background(), common.ChannelNewTx, newTxEvent)
 

@@ -26,7 +26,8 @@ func DepositWallet(appctx appctx.AppContext) {
 			tx := (<-ch).Data().(common.NewTx)
 			if tx.Type == common.DepositType {
 				amount := tx.Credit + tx.Debit
-				err := depositBiz.DepositWallet(context.Background(), tx.WalletId, amount)
+
+				err := depositBiz.DepositWallet(context.Background(), tx.UserId, amount)
 				if err != nil {
 					panic(err)
 				}
