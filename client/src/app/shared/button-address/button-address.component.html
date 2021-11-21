@@ -1,15 +1,17 @@
 <div class="address-button">
-  <button status="primary" outline *ngIf="$account| async as account; else showButtonConnect" class="btn-address">
-    <img class="icon-ethereum" src="assets/icons/ethereum-eth.svg" alt="" />
-    <span class="amount">{{ ($balance | async) }}</span>
-    <span class="address">
-      {{ account | address }}
+  <button status="primary" outline *ngIf="$address | async as addr; else showButtonConnect"
+    class="btn-address inline-flex items-center border-1 rounded-md bg-gray-50 border-solid border-indigo-100 px-2 py-1">
+    <img class="w-8" src="assets/icons/ethereum-eth.svg" alt="" />
+    <span class="px-2 uppercase  font-bold ">{{ addr | address }}</span>
+    <span *ngIf="!($isLogon | async)" (click)="login()"
+      class="rounded-md bg-indigo-800 text-white px-4 py-2 cursor-pointer">
+      Signin
     </span>
   </button>
   <ng-template #showButtonConnect>
     <button (click)="connectWallet()" nbButton status="primary"
-      class="btn-connect-wallet bg-indigo-600 hover:bg-indigo-800 text-white font-bold py-2 px-4 rounded inline-flex align-middle">
-      <img class="icon-metamask" src="assets/icons/metamask.svg" alt="" />
+      class="btn-connect-wallet bg-indigo-600 hover:bg-indigo-800 text-white font-bold py-2 px-4 rounded inline-flex align-middle border-solid cursor-pointer">
+      <img class="h-5" src="assets/icons/metamask.svg" alt="" />
       <span class="mt-1">Connect Wallet</span>
     </button>
   </ng-template>

@@ -69,7 +69,7 @@ func main() {
 	}
 
 	{
-		v1 := r.Group("/v1")
+		v1 := r.Group("/api/v1")
 		setupMainRoute(appCtx, v1)
 	}
 
