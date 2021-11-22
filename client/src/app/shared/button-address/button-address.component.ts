@@ -27,6 +27,8 @@ export class ButtonAddressComponent implements OnInit, OnDestroy {
   }
 
   login() {
-    this.authSvc.getNonce().subscribe((e) => console.log({ e }));
+    this.authSvc.login().subscribe((resp) => {
+      console.log({ resp });
+    });
   }
 }

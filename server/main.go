@@ -10,6 +10,7 @@ import (
 	"os"
 
 	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
@@ -58,6 +59,11 @@ func main() {
 	}
 
 	r := gin.Default()
+	config := cors.DefaultConfig()
+	// config.AllowOrigins = []string{"http://google.com"}
+	config.AllowAllOrigins = true
+
+	r.Use(cors.New(config))
 
 	{
 		r.Use(middleware.Recover(appCtx))

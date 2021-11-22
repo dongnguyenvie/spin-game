@@ -44,6 +44,10 @@ export class SignerService {
     return this.$address.asObservable();
   }
 
+  get signer() {
+    return this._web3;
+  }
+
   async connectWallet() {
     try {
       const account = await window.ethereum.send('eth_requestAccounts');
