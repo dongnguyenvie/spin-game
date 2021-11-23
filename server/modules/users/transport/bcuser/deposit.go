@@ -9,6 +9,7 @@ import (
 	contracts "nolan/spin-game/components/constracts"
 	"nolan/spin-game/components/pubsub"
 	userstorage "nolan/spin-game/modules/users/storage"
+	"strings"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	goecommon "github.com/ethereum/go-ethereum/common"
@@ -51,7 +52,8 @@ func Deposit(appctx appctx.AppContext) {
 					// TODO: recovery balance when the tsx is failed
 					return
 				}
-				result, error := userStore.FindDataWithCondition(context.Background(), map[string]interface{}{"wallet_address": vLog.Sender.String()})
+				addr := strings.ToLower(vLog.Sender.String())
+				result, error := userStore.FindDataWithCondition(context.Background(), map[string]interface{}{"wallet_address": addr})
 
 				if error != nil {
 					panic("wallet address not found")
