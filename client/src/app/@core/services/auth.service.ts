@@ -11,6 +11,8 @@ import {
   defer,
   take,
   takeLast,
+  withLatestFrom,
+  last,
 } from 'rxjs';
 import { API } from '../constant/common.constant';
 import { HttpClient } from '@angular/common/http';
@@ -22,42 +24,44 @@ import { NonceRespose } from '../model/common.model';
 export class AuthService {
   constructor(private signer: SignerService, private http: HttpClient) {}
 
-  getNonce() {
-    return this.signer.addressAsObs.pipe(
-      switchMap((addr) => {
-        if (!addr) return of(null);
-        return this.http
-          .get<NonceRespose>(API.nonce.replace(':address', addr))
-          .pipe(map((resp) => resp.data.nonce));
-      })
-    );
+  getNonce(addr: string) {
+    return this.http
+      .get<NonceRespose>(API.nonce.replace(':address', addr))
+      .pipe(map((resp) => resp.data.nonce));
   }
 
-  login() {
+  login(signature: string, addr: string) {
+    return this.http.post(API.login, {
+      signature,
+      walletAddress: addr,
+    });
+  }
+
+  login$() {
     const lastAddresses$ = defer(() =>
-      this.signer.addressAsObs.pipe(takeLast(0))
+      of(null).pipe(
+        withLatestFrom(this.signer.address$),
+        map(([_, lastAddr]) => lastAddr)
+      )
     );
 
-    return this.getNonce().pipe(
-      concatMap((nonce) => {
-        if (!nonce) return of(null);
-        return lastAddresses$.pipe(
-          concatMap((addresses) =>
-            this.signer.signer.eth.personal.sign(String(nonce), addresses, '')
-          )
-        );
-      }),
-      concatMap((signature) => {
-        if (!signature) return of(null);
-        return lastAddresses$.pipe(
-          concatMap((addresses) =>
-            this.http.post(API.login, {
-              signature,
-              walletAddress: addresses,
-            })
-          )
-        );
-      })
+    return lastAddresses$.pipe(
+      switchMap((addr) =>
+        this.getNonce(addr).pipe(
+          concatMap((nonce) => {
+            if (!nonce) return of(null);
+            return this.signer.signer.eth.personal.sign(
+              String(nonce),
+              addr,
+              ''
+            );
+          }),
+          concatMap((signature) => {
+            if (!signature) return of(null);
+            return this.login(signature, addr);
+          })
+        )
+      )
     );
   }
 }

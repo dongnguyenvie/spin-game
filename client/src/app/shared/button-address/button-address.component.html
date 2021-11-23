@@ -1,9 +1,9 @@
 <div class="address-button">
-  <button status="primary" outline *ngIf="$address | async as addr; else showButtonConnect"
+  <button status="primary" outline *ngIf="address$ | async as addr; else showButtonConnect"
     class="btn-address inline-flex items-center border-1 rounded-md bg-gray-50 border-solid border-indigo-100 px-2 py-1">
     <img class="w-8" src="assets/icons/ethereum-eth.svg" alt="" />
     <span class="px-2 uppercase  font-bold ">{{ addr | address }}</span>
-    <span *ngIf="!($isLogon | async)" (click)="login()"
+    <span *ngIf="!(isLogon$ | async)" (click)="login()"
       class="rounded-md bg-indigo-800 text-white px-4 py-2 cursor-pointer">
       Signin
     </span>

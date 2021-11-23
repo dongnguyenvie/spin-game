@@ -11,7 +11,7 @@ export class SignerService {
 
   private _isReady = false;
   private _isLogon = new BehaviorSubject(false);
-  private $address = new BehaviorSubject<string>('');
+  private _address$ = new BehaviorSubject<string>('');
 
   constructor() {
     this.preSetup();
@@ -24,11 +24,13 @@ export class SignerService {
       try {
         const account = await window.ethereum.send('eth_accounts');
         if (account.result.length) {
-          console.log("account", account)
-          this.$address.next(account.result[0]);
+          this._address$.next(account.result[0]);
           this._isReady = true;
         }
       } catch (error) {}
+      window.ethereum.on('accountsChanged', (accounts: string[]) => {
+        this._address$.next(accounts[0]);
+      });
     });
   }
 
@@ -36,12 +38,12 @@ export class SignerService {
     return this._isReady;
   }
 
-  get isLogonAsObs() {
+  get isLogon$() {
     return this._isLogon.asObservable();
   }
 
-  get addressAsObs() {
-    return this.$address.asObservable();
+  get address$() {
+    return this._address$.asObservable();
   }
 
   get signer() {
@@ -52,7 +54,7 @@ export class SignerService {
     try {
       const account = await window.ethereum.send('eth_requestAccounts');
       if (account.result.length) {
-        this.$address.next(account.result[0]);
+        this._address$.next(account.result[0]);
         this._isReady = true;
       }
     } catch (error) {}

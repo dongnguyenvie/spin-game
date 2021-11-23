@@ -10,11 +10,11 @@ import { SignerService } from 'src/app/@core/services/signer.service';
   providers: [],
 })
 export class ButtonAddressComponent implements OnInit, OnDestroy {
-  $balance = new Subject<void>();
-  $account = new Subject<void>();
+  balance$ = new Subject<void>();
+  account$ = new Subject<void>();
 
-  $address = this.signer.addressAsObs;
-  $isLogon = this.signer.isLogonAsObs;
+  address$ = this.signer.address$;
+  isLogon$ = this.signer.isLogon$;
 
   constructor(private signer: SignerService, private authSvc: AuthService) {}
 
@@ -27,7 +27,7 @@ export class ButtonAddressComponent implements OnInit, OnDestroy {
   }
 
   login() {
-    this.authSvc.login().subscribe((resp) => {
+    this.authSvc.login$().subscribe((resp) => {
       console.log({ resp });
     });
   }
