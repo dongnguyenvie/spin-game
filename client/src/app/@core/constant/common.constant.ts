@@ -4,6 +4,5 @@ export const API = {
   nonce: ENDPOINT + API_VERSION + 'users/nonce/:address',
   login: ENDPOINT + API_VERSION + 'signin',
   register: ENDPOINT + API_VERSION + 'signup',
+  myWallet: ENDPOINT + API_VERSION + 'wallets/me',
 };
-
-export const REGISTER_SIGN = '25251325';

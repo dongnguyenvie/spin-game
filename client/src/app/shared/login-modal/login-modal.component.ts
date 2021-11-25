@@ -81,7 +81,7 @@ export class LoginModalComponent implements OnInit, OnDestroy {
   // }
 
   onClose(): void {
-    this.modalSvc.close();
+    this.modalSvc.onClose();
   }
 
   onRegister(): void {
@@ -97,7 +97,7 @@ export class LoginModalComponent implements OnInit, OnDestroy {
       })
       .subscribe((resp) => {
         if (!resp) return;
-        this.modalSvc.close();
+        this.modalSvc.onClose();
         this.authSvc.login$().subscribe((resp2) => {
           console.log({ resp2 });
         });
@@ -105,6 +105,6 @@ export class LoginModalComponent implements OnInit, OnDestroy {
   }
 
   onOpen(): void {
-    this.modalSvc.open();
+    this.modalSvc.onOpen();
   }
 }

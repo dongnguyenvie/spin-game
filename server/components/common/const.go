@@ -39,3 +39,8 @@ func AppRecover() {
 		log.Println("Recovery error:", err)
 	}
 }
+
+const (
+	PackagePrice    = 100000000000
+	PackageQuantity = 5
+)

@@ -1,9 +1,10 @@
-import { ChangeDetectorRef, Injectable } from '@angular/core';
+import { ChangeDetectorRef, Injectable, NgZone } from '@angular/core';
 import Web3 from 'web3';
 import {
   BehaviorSubject,
   catchError,
   defer,
+  distinctUntilChanged,
   from,
   fromEvent,
   map,
@@ -11,8 +12,10 @@ import {
   of,
   Subject,
   switchMap,
+  take,
   tap,
   timer,
+  withLatestFrom,
 } from 'rxjs';
 import { EthAccounts } from '../model/common.model';
 
@@ -26,11 +29,11 @@ export class SignerService {
   private _isReady = false;
   private readonly _address$ = new BehaviorSubject<string>('');
 
-  constructor() {
-    this.setup();
+  constructor(private ngZone: NgZone) {
+    this._setup();
   }
 
-  private setup(): void {
+  private _setup(): void {
     window.addEventListener('load', async () => {
       const accounts$ = defer(
         () => window.ethereum.send('eth_accounts') as Promise<EthAccounts>
@@ -38,10 +41,20 @@ export class SignerService {
       if (!window.ethereum) return;
       this._web3 = new Web3(window.ethereum);
 
+      const lastAddr$ = this._address$.pipe(take(1));
       timer(0, 1000)
         .pipe(switchMap(() => accounts$.pipe(map((resp) => resp.result))))
-        .subscribe((accounts) => {
-          if (Array.isArray(accounts) && accounts.length) {
+        .pipe(
+          switchMap((accounts) =>
+            lastAddr$.pipe(map((addr) => [addr, accounts]))
+          )
+        )
+        .subscribe(([addr, accounts]) => {
+          if (
+            Array.isArray(accounts) &&
+            accounts.length &&
+            addr !== accounts[0]
+          ) {
             this._address$.next(accounts[0]);
           }
         });
@@ -53,7 +66,7 @@ export class SignerService {
   }
 
   get address$() {
-    return this._address$.asObservable();
+    return this._address$.pipe(distinctUntilChanged());
   }
 
   get signer$() {

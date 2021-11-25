@@ -6,6 +6,8 @@ import { JwtInterceptor } from './@core/interceptors/jwt.interceptor';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ProfileModule } from './featues/profile/profile.module';
+import { ImageComponent } from './shared/image/image.component';
 import { LoginModalModule } from './shared/login-modal/login-modal.module';
 import { LayoutModule } from './_layout/layout.module';
 
@@ -16,7 +18,13 @@ const DefaultModule = [
   // ReactiveFormsModule,
 ];
 @NgModule({
-  imports: [...DefaultModule, AppRoutingModule, LayoutModule, LoginModalModule],
+  imports: [
+    ...DefaultModule,
+    AppRoutingModule,
+    LayoutModule,
+    LoginModalModule,
+    ProfileModule,
+  ],
   declarations: [AppComponent],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

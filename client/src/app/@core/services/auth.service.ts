@@ -16,10 +16,11 @@ import {
   catchError,
   tap,
   BehaviorSubject,
+  Observable,
 } from 'rxjs';
 import { API } from '../constant/common.constant';
 import { HttpClient } from '@angular/common/http';
-import { LogonRespose, NonceRespose } from '../model/common.model';
+import { IUser, LogonRespose, NonceRespose } from '../model/common.model';
 import { LoginModalService } from 'src/app/shared/login-modal/login-modal.service';
 import { parseJwt } from '../utils/util';
 
@@ -42,9 +43,9 @@ export class AuthService {
   get user$() {
     return this._token$.pipe(
       map((token) => {
-        if (!token) return '';
+        if (!token) return null;
         const parse = parseJwt(token);
-        return parse.payload;
+        return parse.payload as IUser;
       })
     );
   }
@@ -142,7 +143,7 @@ export class AuthService {
             }),
             catchError((err) => {
               if (err.status === 404) {
-                this.loginModal.open();
+                this.loginModal.onOpen();
               }
               return of(null);
             })

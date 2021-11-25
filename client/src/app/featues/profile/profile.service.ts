@@ -4,20 +4,20 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class LoginModalService {
-  private _isShow$ = new BehaviorSubject(false);
+export class ProfileService {
+  private readonly _isShow$ = new BehaviorSubject(false);
 
   constructor() {}
 
-  get isShow$() {
+  get show$() {
     return this._isShow$.asObservable();
   }
 
-  public onOpen() {
+  onOpen(): void {
     this._isShow$.next(true);
   }
 
-  public onClose() {
+  onClose(): void {
     this._isShow$.next(false);
   }
 }

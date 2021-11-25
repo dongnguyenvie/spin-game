@@ -1,24 +1,25 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/@core/services/auth.service';
 import { SignerService } from 'src/app/@core/services/signer.service';
+import { ProfileService } from 'src/app/featues/profile/profile.service';
 
 @Component({
   selector: 'app-button-address',
   templateUrl: './button-address.component.html',
   styleUrls: ['./button-address.component.scss'],
-  providers: [],
 })
 export class ButtonAddressComponent implements OnInit, OnDestroy {
   address$ = this.signer.address$;
   token$ = this.authSvc.token$;
+  user$ = this.authSvc.user$;
 
   constructor(
     private signer: SignerService,
     private authSvc: AuthService,
-    private cdn: ChangeDetectorRef
+    private profileSvc: ProfileService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.authSvc.user$.subscribe({
       next: (resp) => {
         console.log('resp', resp);
@@ -26,9 +27,9 @@ export class ButtonAddressComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy(): void {}
 
-  connectWallet() {
+  connectWallet(): void {
     this.signer.connectWallet().subscribe({
       complete: () => {
         console.log('connectWallet complete');
@@ -39,9 +40,13 @@ export class ButtonAddressComponent implements OnInit, OnDestroy {
     });
   }
 
-  login() {
+  login(): void {
     this.authSvc.login$().subscribe((resp) => {
       console.log({ resp });
     });
+  }
+
+  onOpenProfile(): void {
+    this.profileSvc.onOpen();
   }
 }

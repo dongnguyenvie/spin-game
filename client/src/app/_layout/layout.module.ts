@@ -5,9 +5,10 @@ import { AppHeaderComponent } from './app-header/app-header.component';
 import { AppLayoutComponent } from './app-layout/app-layout.component';
 import { AppNavigationComponent } from './app-navigation/app-navigation.component';
 import { AppRoutingModule } from '../app-routing.module';
+import { ProfileModule } from '../featues/profile/profile.module';
 
 @NgModule({
-  imports: [AppRoutingModule, CommonModule, SharedModule],
+  imports: [AppRoutingModule, CommonModule, SharedModule, ProfileModule],
   declarations: [
     AppHeaderComponent,
     AppLayoutComponent,

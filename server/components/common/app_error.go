@@ -73,6 +73,10 @@ func ErrAddressNonce(err error) *AppError {
 	return NewFullErrorResponse(http.StatusNotFound, err, "Address not found", err.Error(), "Warning")
 }
 
+func ErrInsufficientPackage(err error) *AppError {
+	return NewFullErrorResponse(http.StatusNotFound, err, "insufficient funds", err.Error(), "Warning")
+}
+
 func ErrInvalidRequest(err error) *AppError {
 	return NewErrorResponse(err, "invalid request", err.Error(), "ErrInvalidRequest")
 }

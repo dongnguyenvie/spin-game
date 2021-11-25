@@ -14,9 +14,9 @@ import (
 func setupMainRoute(appCtx appctx.AppContext, group *gin.RouterGroup) {
 
 	{
-		group.POST("/signin", ginuser.SignIn(appCtx))
-		group.POST("/signup", ginuser.SignUp(appCtx))
-		group.GET("/profile", middleware.Guard(appCtx), ginuser.Profile(appCtx))
+		group.POST("/signin", ginuser.SignIn(appCtx))                            // done
+		group.POST("/signup", ginuser.SignUp(appCtx))                            // done
+		group.GET("/profile", middleware.Guard(appCtx), ginuser.Profile(appCtx)) // done
 	}
 
 	{
@@ -27,6 +27,7 @@ func setupMainRoute(appCtx appctx.AppContext, group *gin.RouterGroup) {
 
 	{
 		walletGr := group.Group("/wallets")
+		walletGr.GET("/me", middleware.Guard(appCtx), ginwallet.MyWallet(appCtx)) // done
 		walletGr.GET("", ginwallet.ListWallet(appCtx))
 		walletGr.POST("", ginwallet.CreateWallet(appCtx))
 		walletGr.GET("/:id", ginwallet.GetWallet(appCtx))
@@ -41,8 +42,10 @@ func setupMainRoute(appCtx appctx.AppContext, group *gin.RouterGroup) {
 
 	{
 		gameGr := group.Group("/spin")
-		gameGr.GET("/histories", gingamespin.ListHistory(appCtx))
-		gameGr.POST("/play", gingamespin.Play(appCtx))
+		gameGr.GET("/histories", middleware.Guard(appCtx), gingamespin.ListHistory(appCtx))
+		gameGr.POST("/play", middleware.Guard(appCtx), gingamespin.Play(appCtx))
+		gameGr.POST("/buy-package", middleware.Guard(appCtx), gingamespin.BuyPackage(appCtx))
+
 	}
 
 }

@@ -6,7 +6,10 @@
       class="rounded-md bg-indigo-800 text-white px-4 py-2 cursor-pointer">
       Signin
     </span>
-    <img *ngIf="!!(token$ | async)" class="w-8" src="assets/icons/ethereum-eth.svg" alt="" />
+    <!-- <img *ngIf="!!(token$ | async)" class="w-8" src="assets/icons/ethereum-eth.svg" alt="" /> -->
+
+    <app-image (click)="onOpenProfile()" *ngIf="user$ | async as user" [src]="user.email" class="w-8 cursor-pointer">
+    </app-image>
   </button>
   <ng-template #showButtonConnect>
     <button (click)="connectWallet()" nbButton status="primary"

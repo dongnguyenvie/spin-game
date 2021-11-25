@@ -37,7 +37,7 @@ func SignIn(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		jwtProvider := jwt.NewTokenJWTProvider(secretKey)
 
-		token, err := jwtProvider.Generate(tokenprovider.TokenPayload{UserId: user.Id, WalletAddress: user.WalletAddress}, int(time.Minute*20))
+		token, err := jwtProvider.Generate(tokenprovider.TokenPayload{UserId: user.Id, WalletAddress: user.WalletAddress, Email: user.Email}, int(time.Minute*20))
 
 		if err != nil {
 			panic(err)

@@ -38,4 +38,5 @@ type Token struct {
 type TokenPayload struct {
 	UserId        int    `json:"userId"`
 	WalletAddress string `json:"walletAddress"`
+	Email         string `json:"email"`
 }

@@ -1,0 +1,9 @@
+<nav class="w-full">
+  <div>
+    <button *ngFor="let item of tabs; index as i"
+      class="flex items-center px-2 py-1 hover:text-gray-900 font-medium text-gray-600 border-0 bg-transparent cursor-pointer underline"
+      [class]="active === i ? 'text-gray-900 font-bold':''" (click)="onChangeTab(i)">
+      {{item}}
+    </button>
+  </div>
+</nav>

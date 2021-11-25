@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func (s *sqlStore) Deposit(ctx context.Context, condition map[string]interface{}, amount int) error {
+func (s *sqlStore) Update_balance(ctx context.Context, condition map[string]interface{}, amount int) error {
 	db := s.db.Table(walletmodel.Wallet{}.TableName())
 
 	db = db.Where(condition)

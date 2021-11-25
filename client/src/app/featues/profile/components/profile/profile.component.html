@@ -1,0 +1,34 @@
+<app-profile-modal [isOpen]="isShow$" (close)="onClose()">
+  <div class="flex h-full">
+    <div class="w-1/12 h-full mt-8 ">
+      <app-profile-tab [tabs]="tabs" [active]="tabActive" (changeTab)="onChangeTab($event)"></app-profile-tab>
+    </div>
+    <div class="w-11/12 border-gray-200 pl-2 border-l border-solid border-t-0 border-b-0 border-r-0 h-full">
+      <div *ngIf="tabs[tabActive] === tabs[0]">
+        Package
+        <hr />
+      </div>
+      <div *ngIf="tabs[tabActive] === tabs[1]">
+        Wallet
+        <hr />
+        <table *ngIf="wallet$ | async as wallet" class="table-auto" [border]="1">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Balance</th>
+              <th>updated_at</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{wallet.id}}</td>
+              <td>{{wallet.balance}}</td>
+              <td>{{wallet.updated_at}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</app-profile-modal>
