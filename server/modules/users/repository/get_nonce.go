@@ -25,7 +25,7 @@ func (repo *userRepo) GetUserNonce(ctx context.Context, address string) (int, er
 	})
 
 	if err != nil {
-		return -1, common.ErrCannotGetEntity("user nonce", err)
+		return -1, common.ErrAddressNonce(err)
 	}
 
 	return user.Nonce, nil

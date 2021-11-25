@@ -8,6 +8,7 @@ import (
 	"nolan/spin-game/components/pubsub"
 	local_pubsub "nolan/spin-game/components/pubsub/localpb"
 	"os"
+	"time"
 
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/gin-contrib/cors"
@@ -59,11 +60,15 @@ func main() {
 	}
 
 	r := gin.Default()
-	config := cors.DefaultConfig()
-	// config.AllowOrigins = []string{"http://google.com"}
-	config.AllowAllOrigins = true
 
-	r.Use(cors.New(config))
+	r.Use(cors.New(cors.Config{
+		AllowAllOrigins:  true,
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 
 	{
 		r.Use(middleware.Recover(appCtx))

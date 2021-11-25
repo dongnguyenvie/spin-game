@@ -1,5 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/@core/services/auth.service';
 import { SignerService } from 'src/app/@core/services/signer.service';
 
@@ -10,20 +9,34 @@ import { SignerService } from 'src/app/@core/services/signer.service';
   providers: [],
 })
 export class ButtonAddressComponent implements OnInit, OnDestroy {
-  balance$ = new Subject<void>();
-  account$ = new Subject<void>();
-
   address$ = this.signer.address$;
-  isLogon$ = this.signer.isLogon$;
+  token$ = this.authSvc.token$;
 
-  constructor(private signer: SignerService, private authSvc: AuthService) {}
+  constructor(
+    private signer: SignerService,
+    private authSvc: AuthService,
+    private cdn: ChangeDetectorRef
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.authSvc.user$.subscribe({
+      next: (resp) => {
+        console.log('resp', resp);
+      },
+    });
+  }
 
   ngOnDestroy() {}
 
   connectWallet() {
-    this.signer.connectWallet();
+    this.signer.connectWallet().subscribe({
+      complete: () => {
+        console.log('connectWallet complete');
+      },
+      next: (resp) => {
+        console.log('connectWallet', resp);
+      },
+    });
   }
 
   login() {
