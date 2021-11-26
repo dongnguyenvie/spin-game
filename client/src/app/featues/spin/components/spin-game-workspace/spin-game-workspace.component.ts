@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { of, switchMap, take } from 'rxjs';
+import { AuthService } from 'src/app/@core/services/auth.service';
 import { GameService } from 'src/app/@core/services/game.service';
 
+const AWARDS_POSITION = [0, 9, 277, 330, 229, 330, 138, 47];
+const AWARDS_ICON = ['😊', '😝', '😍', '😎', '🍩', '🍭', '🍰', '🍬'];
 @Component({
   selector: 'app-spin-game-workspace',
   templateUrl: './spin-game-workspace.component.html',
@@ -10,31 +14,50 @@ export class SpinGameWorkspaceComponent implements OnInit {
   wheelRotation = 500;
   isRunning = false;
   isStopping = false;
-  options: number[] = [];
-  constructor(private gameSvc: GameService) {}
+  options: string[] = [];
+  result: string | null = null;
+  constructor(private gameSvc: GameService, private authSvc: AuthService) {}
 
   ngOnInit() {
     this.gameSvc.fetchAwardOptions$().subscribe((resp) => {
       if (!resp) return;
-      this.options = resp.awards;
+      this.options = resp.awards.map((d) => d + 'ETH');
+      console.log(resp);
     });
   }
 
   private _reset() {}
 
-  rotate() {
-    this.isRunning = true;
-    this.isStopping = false;
-    const x = 1024;
-    const y = 9999;
+  get awards() {
+    return this.options.map((opt, i) =>
+      i % 2 === 0 ? `${opt} ${AWARDS_ICON[i]}` : `${AWARDS_ICON[i]} ${opt}`
+    );
+  }
 
-    const deg = Math.floor(Math.random() * (x - y)) + y;
-    this.wheelRotation = deg;
-    this.gameSvc.fetchPlayGame$().subscribe((val) => {
-      console.log(val);
-      setTimeout(() => {
-        this.isStopping = true;
-      }, 3000);
-    });
+  rotate() {
+    const token$ = this.authSvc.token$.pipe(take(1));
+
+    token$
+      .pipe(
+        switchMap((token) => {
+          if (!token) {
+            alert('Vui lòng login tài khoản bằng ví MetaMask')
+            return of(null)
+          };
+          this.isRunning = true;
+          this.isStopping = false;
+          this.result = null;
+          return this.gameSvc.fetchPlayGame$();
+        })
+      )
+      .subscribe((resp) => {
+        if (!resp) return;
+        setTimeout(() => {
+          this.isStopping = true;
+          this.wheelRotation = AWARDS_POSITION[resp.index];
+          this.result = resp.award + 'ETH';
+          console.log('get award', resp);
+        }, 3000);
+      });
   }
 }

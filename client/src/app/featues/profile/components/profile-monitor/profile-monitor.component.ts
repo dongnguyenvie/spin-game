@@ -90,7 +90,10 @@ export class ProfileMonitorComponent implements OnInit {
   }
 
   onBuyPackage(num: number) {
-    this.gameSvc.fetchBuyPackage$(num).subscribe();
+    this.gameSvc.fetchBuyPackage$(num).subscribe((resp) => {
+      if (!resp) return;
+      alert('Mua thành công');
+    });
   }
 
   onOpen(): void {

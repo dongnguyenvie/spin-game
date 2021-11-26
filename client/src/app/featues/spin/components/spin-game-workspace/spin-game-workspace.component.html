@@ -3,32 +3,10 @@
     <div id="wheel" class="wheel" [class]="{'wheel-spin-on':isRunning, 'wheel-spin-stopping':isStopping}"
       [style.--wheel]="wheelRotation+'deg'">
       <div>
-        <span class="span1">
-          <p>😊 500%</p>
-        </span>
-        <span class="span2">
-          <p>111😝</p>
-        </span>
-        <span class="span3">
-          <p>😍</p>
-        </span>
-        <span class="span4">
-          <p>😎</p>
-        </span>
-
-        <span class="span5">
-          <p>🍩</p>
-        </span>
-        <span class="span6">
-          <p>🍭</p>
-        </span>
-        <span class="span7">
-          <p>🍰</p>
-        </span>
-        <span class="span8">
-          <p>🍬</p>
+        <span *ngFor="let label of awards; index as index" [class]="'span'+(index+1)">
+          <p>{{label}}</p>
         </span>
       </div>
     </div>
-    <button class="absolute" class="spin" (click)="rotate()">SPIN <span >{{'>'}}</span></button>
+    <button class="absolute" class="spin" (click)="rotate()">SPIN <span>{{'>'}}</span></button>
   </div>
