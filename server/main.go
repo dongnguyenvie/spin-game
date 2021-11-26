@@ -40,7 +40,7 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	// db = db.Debug()
+	db = db.Debug()
 
 	ethClient, err := ethclient.Dial(InfureEndpoint)
 	if err != nil {

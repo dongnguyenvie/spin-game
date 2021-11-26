@@ -18,6 +18,9 @@ import {
   withLatestFrom,
 } from 'rxjs';
 import { EthAccounts } from '../model/common.model';
+import { setupContract } from '../libs/contracts/contract';
+import { SpinProccessor } from '../libs/contracts/SpinProccessor';
+import { SPIN_PROCESSER } from '../constant/common.constant';
 
 const ONE_ETH_TO_GWEI = 1e18;
 @Injectable({
@@ -28,6 +31,7 @@ export class SignerService {
 
   private _isReady = false;
   private readonly _address$ = new BehaviorSubject<string>('');
+  private _contract: SpinProccessor;
 
   constructor(private ngZone: NgZone) {
     this._setup();
@@ -40,6 +44,8 @@ export class SignerService {
       );
       if (!window.ethereum) return;
       this._web3 = new Web3(window.ethereum);
+
+      this._contract = setupContract(this._web3, SPIN_PROCESSER);
 
       const lastAddr$ = this._address$.pipe(take(1));
       timer(0, 1000)
@@ -71,6 +77,10 @@ export class SignerService {
 
   get signer$() {
     return this._web3;
+  }
+
+  get contract() {
+    return this._contract;
   }
 
   connectWallet() {

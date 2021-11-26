@@ -1,0 +1,49 @@
+<div *ngIf="token$ | async" class="w-full px-4 mt-20">
+  <div class="w-12/12 border-gray-200">
+    <div class="mb-2 font-bold text-lg">Ví tiền</div>
+    <div class="pt-3">
+      <div *ngIf="wallet$ | async as wallet" class="inline-flex border border-blue-400 border-dashed px-2 rounded-lg">
+        Số tiền: <span class="ml-2 font-bold text-red-600">{{wallet.balanceToStr}}</span>ETH
+      </div>
+      <div class="mt-2">
+        <hr />
+        <div class="mb-2 font-bold text-lg">Mua lượt quay</div>
+        <div *ngIf="package$ | async as package"
+          class="inline-flex border border-blue-400 border-dashed px-2 rounded-lg">
+          Số lượt quay của bạn: <span class="ml-2 font-bold text-red-600 mr-1">{{package.package}}</span> lượt
+        </div>
+        <div class="mt-2" *ngIf="wallet$ | async as wallet; ">
+          <button *ngFor="let i of packages"
+            class="mr-1 bg-white hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded cursor-pointer"
+            [class]="{
+                  'opacity-50':isInsufficientFunds(wallet.balance , i),
+                  'cursor-not-allowed':isInsufficientFunds(wallet.balance , i)
+                }" [disabled]="isInsufficientFunds(wallet.balance , i)" (click)="onBuyPackage(i)">Mua
+            {{i}} lượt</button>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="mt-2">
+      <hr />
+      <div class="mb-2 font-bold text-lg">Nạp tiền bằng ETH</div>
+      <button *ngFor="let amount of depositOptions" (click)="onDeposit(amount)"
+        class="mr-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded cursor-pointer">Deposit
+        {{amount}}ETH</button>
+    </div>
+
+    <div class="mt-2">
+      <hr />
+      <div class="mb-2 font-bold text-lg">Rút tiền</div>
+      <div class="flex">
+        <input type="number"
+          class="bg-white appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500"
+          placeholder="Số ETH cần rút" />
+        <button
+          class="ml-1 bg-transparent hover:bg-indigo-500 text-indigo-700 font-semibold hover:text-white py-2 px-4 border border-indigo-500 hover:border-transparent rounded cursor-pointer">
+          Rút</button>
+      </div>
+    </div>
+  </div>
+</div>

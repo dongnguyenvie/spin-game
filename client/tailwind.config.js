@@ -155,6 +155,9 @@ module.exports = {
       "3xl": "1.5rem",
       full: "9999px",
     },
+    borderStyle: {
+      DEFAULT: "solid",
+    },
     borderWidth: {
       DEFAULT: "1px",
       0: "0px",
@@ -899,8 +902,8 @@ module.exports = {
       "focus",
     ],
     borderRadius: ["responsive"],
-    borderStyle: ["responsive"],
-    borderWidth: ["responsive"],
+    borderStyle: ["responsive", "hover", "focus"],
+    borderWidth: ["responsive", "hover", "focus"],
     boxDecorationBreak: ["responsive"],
     boxShadow: ["responsive", "group-hover", "focus-within", "hover", "focus"],
     boxSizing: ["responsive"],

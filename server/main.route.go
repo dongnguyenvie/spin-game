@@ -42,9 +42,11 @@ func setupMainRoute(appCtx appctx.AppContext, group *gin.RouterGroup) {
 
 	{
 		gameGr := group.Group("/spin")
+		gameGr.POST("/buy-package", middleware.Guard(appCtx), gingamespin.BuyPackage(appCtx)) // done
+		gameGr.GET("/me", middleware.Guard(appCtx), gingamespin.MyPackage(appCtx))            // done
+		gameGr.GET("/awards", gingamespin.GetAwards(appCtx))                                  // done
 		gameGr.GET("/histories", middleware.Guard(appCtx), gingamespin.ListHistory(appCtx))
 		gameGr.POST("/play", middleware.Guard(appCtx), gingamespin.Play(appCtx))
-		gameGr.POST("/buy-package", middleware.Guard(appCtx), gingamespin.BuyPackage(appCtx))
 
 	}
 

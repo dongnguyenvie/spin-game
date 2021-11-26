@@ -1,8 +1,25 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, of, switchMap, tap, timer } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  from,
+  map,
+  of,
+  switchMap,
+  take,
+  tap,
+  timer,
+} from 'rxjs';
 import { API } from '../constant/common.constant';
-import { WalletData, WalletRespose } from '../model/common.model';
+import {
+  WalletData,
+  MyWalletRespose,
+  MyPackageRespose,
+  MyPackageData,
+} from '../model/common.model';
+import { toPlainString } from '../utils/util';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,22 +29,26 @@ export class WalletService {
     null as unknown as WalletData
   );
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private authSvc: AuthService) {
     this._setup();
   }
 
   private _setup() {
-    timer(0, 10000).subscribe((resp) => {
-      this.fetchMyWallet().subscribe();
-    });
+    const token$ = this.authSvc.token$.pipe(take(1));
+    timer(0, 10000)
+      .pipe(switchMap(() => token$))
+      .subscribe((token) => {
+        if (!token) return;
+        this.fetchMyWallet$().subscribe();
+      });
   }
 
   get wallet$() {
     return this._wallet$.asObservable();
   }
 
-  fetchMyWallet() {
-    return this.http.get<WalletRespose>(API.myWallet).pipe(
+  fetchMyWallet$() {
+    return this.http.get<MyWalletRespose>(API.myWallet).pipe(
       tap((resp) => {
         if (!resp) return;
         this._wallet$.next(resp.data);

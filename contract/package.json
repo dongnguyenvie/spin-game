@@ -2,10 +2,13 @@
   "dependencies": {
     "@openzeppelin/contracts": "^4.3.2",
     "@truffle/hdwallet-provider": "^1.6.0",
-    "truffle-flattener": "^1.5.0"
+    "@typechain/web3-v1": "^4.0.0",
+    "truffle-flattener": "^1.5.0",
+    "typechain": "^6.0.4"
   },
   "scripts": {
-    "flat": "truffle-flattener contracts/Spin.sol"
+    "flat": "truffle-flattener contracts/Spin.sol",
+    "gen": "typechain typechain --target web3-v1 --out-dir ../client/src/app/@core/libs/contracts './build/contracts/*.json' "
   },
   "devDependencies": {
     "dotenv": "^10.0.0",

@@ -50,13 +50,13 @@ export class AuthService {
     );
   }
 
-  fetchNonce(addr: string) {
+  fetchNonce$(addr: string) {
     return this.http
       .get<NonceRespose>(API.nonce.replace(':address', addr))
       .pipe(map((resp) => resp.data.nonce));
   }
 
-  login({ signature, addr }: { signature: string; addr: string }) {
+  fetchLogin$({ signature, addr }: { signature: string; addr: string }) {
     return this.http.post<LogonRespose>(API.login, {
       signature,
       walletAddress: addr,
@@ -125,7 +125,7 @@ export class AuthService {
     return lastAddresses$
       .pipe(
         switchMap((addr) =>
-          this.fetchNonce(addr).pipe(
+          this.fetchNonce$(addr).pipe(
             concatMap((nonce) => {
               if (!nonce) return of(null);
               return this.signer.signer$.eth.personal.sign(
@@ -136,7 +136,7 @@ export class AuthService {
             }),
             concatMap((signature) => {
               if (!signature) return of(null);
-              return this.login({
+              return this.fetchLogin$({
                 signature,
                 addr,
               });

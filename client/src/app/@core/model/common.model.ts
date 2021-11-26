@@ -22,9 +22,31 @@ export interface WalletData {
   userId: number;
 }
 
+export interface MyPackageData {
+  id: number;
+  FakeId: string;
+  created_at: string;
+  updated_at: string;
+  userId: number;
+  package: number;
+  status: number;
+}
+
+export interface PlayGameData {
+  index: number;
+  award: number;
+}
+
+interface AwardOptions {
+  awards: number[];
+}
+
 export type NonceRespose = BaseResponse<NonceData>;
 export type LogonRespose = BaseResponse<LogonData>;
-export type WalletRespose = BaseResponse<WalletData>;
+export type MyWalletRespose = BaseResponse<WalletData>;
+export type MyPackageRespose = BaseResponse<MyPackageData>;
+export type PlayGameResponse = BaseResponse<PlayGameData>;
+export type AwardOptionResponse = BaseResponse<AwardOptions>;
 
 export interface EthAccounts {
   jsonrpc: string;
@@ -36,4 +58,3 @@ export interface IUser {
   email: string;
   walletAddress: string;
 }
-
