@@ -13,23 +13,26 @@ type AppContext interface {
 	GetEthClient() *ethclient.Client
 	GetSmartContractAddr() string
 	GetPubsub() pubsub.PubSub
+	GetAccountPrivateKey() string
 }
 
 type appCtx struct {
-	db        *gorm.DB
-	secret    string
-	ethClient *ethclient.Client
-	smAddrs   string
-	pubsub    pubsub.PubSub
+	db                *gorm.DB
+	secret            string
+	ethClient         *ethclient.Client
+	smAddrs           string
+	pubsub            pubsub.PubSub
+	accountPrivateKey string
 }
 
-func NewAppContext(db *gorm.DB, ethClient *ethclient.Client, pubsub pubsub.PubSub, secretKey string, smartContractAddrs string) *appCtx {
+func NewAppContext(db *gorm.DB, ethClient *ethclient.Client, pubsub pubsub.PubSub, secretKey string, smartContractAddrs string, accPrivateKey string) *appCtx {
 	return &appCtx{
-		db:        db,
-		ethClient: ethClient,
-		secret:    secretKey,
-		smAddrs:   smartContractAddrs,
-		pubsub:    pubsub,
+		db:                db,
+		ethClient:         ethClient,
+		secret:            secretKey,
+		smAddrs:           smartContractAddrs,
+		pubsub:            pubsub,
+		accountPrivateKey: accPrivateKey,
 	}
 }
 
@@ -51,4 +54,8 @@ func (ctx *appCtx) GetSmartContractAddr() string {
 
 func (ctx *appCtx) GetPubsub() pubsub.PubSub {
 	return ctx.pubsub
+}
+
+func (ctx *appCtx) GetAccountPrivateKey() string {
+	return ctx.accountPrivateKey
 }

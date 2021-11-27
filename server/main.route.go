@@ -27,7 +27,8 @@ func setupMainRoute(appCtx appctx.AppContext, group *gin.RouterGroup) {
 
 	{
 		walletGr := group.Group("/wallets")
-		walletGr.GET("/me", middleware.Guard(appCtx), ginwallet.MyWallet(appCtx)) // done
+		walletGr.GET("/me", middleware.Guard(appCtx), ginwallet.MyWallet(appCtx))        // done
+		walletGr.POST("/withdraw", middleware.Guard(appCtx), ginwallet.Withdraw(appCtx)) // done
 		walletGr.GET("", ginwallet.ListWallet(appCtx))
 		walletGr.POST("", ginwallet.CreateWallet(appCtx))
 		walletGr.GET("/:id", ginwallet.GetWallet(appCtx))

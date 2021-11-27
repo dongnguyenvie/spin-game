@@ -6,13 +6,13 @@ import (
 	gamespinmodel "nolan/spin-game/modules/game_spin/model"
 )
 
-type GameSpinStorage interface {
+type MyPackageStorage interface {
 	FindDataWithCondition(ctx context.Context, condition map[string]interface{}, moreKeys ...string) (*gamespinmodel.GameSpin, error)
 	Update_package(ctx context.Context, condition map[string]interface{}, amount int) error
 }
 
 type myPackageBiz struct {
-	gamespinStorage GameSpinStorage
+	gamespinStorage MyPackageStorage
 }
 
 func NewMyPackageBiz(gamespinStorage GameSpinStorage) *myPackageBiz {

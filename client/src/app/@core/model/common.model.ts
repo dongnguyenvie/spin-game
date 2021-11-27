@@ -41,12 +41,18 @@ interface AwardOptions {
   awards: number[];
 }
 
+interface WithdrawData {
+  tx: string;
+  amount: number;
+}
+
 export type NonceRespose = BaseResponse<NonceData>;
 export type LogonRespose = BaseResponse<LogonData>;
 export type MyWalletRespose = BaseResponse<WalletData>;
 export type MyPackageRespose = BaseResponse<MyPackageData>;
 export type PlayGameResponse = BaseResponse<PlayGameData>;
 export type AwardOptionResponse = BaseResponse<AwardOptions>;
+export type WithDrawResponse = BaseResponse<WithdrawData>;
 
 export interface EthAccounts {
   jsonrpc: string;

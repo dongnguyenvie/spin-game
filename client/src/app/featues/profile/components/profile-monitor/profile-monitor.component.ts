@@ -1,13 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { map, Subscription, take } from 'rxjs';
-import { packagePrice, PACKAGES } from 'src/app/@core/constant/common.constant';
+import {
+  COIN_DECIMAL,
+  packagePrice,
+  PACKAGES,
+} from 'src/app/@core/constant/common.constant';
 import { AuthService } from 'src/app/@core/services/auth.service';
 import { GameService } from 'src/app/@core/services/game.service';
 import { SignerService } from 'src/app/@core/services/signer.service';
 import { WalletService } from 'src/app/@core/services/wallet.service';
-import { toGasprice, toPlainString } from 'src/app/@core/utils/util';
+import {
+  toGasprice,
+  toPlainString,
+  tsxChecker,
+} from 'src/app/@core/utils/util';
 import { ProfileService } from '../../profile.service';
 
+const GAS_DEFAULT = 42234;
 const TABS = ['Wallet'];
 @Component({
   selector: 'app-profile-monitor',
@@ -21,7 +30,11 @@ export class ProfileMonitorComponent implements OnInit {
   packages = PACKAGES;
   depositOptions = [0.00001, 0.00002, 0.00003];
 
+  withdrawProcessing: Record<string, { status: boolean; amount: string }> = {};
+
   tokenSub: Subscription;
+  withdrawAmout = 0;
+  @ViewChild('withdrawInput') withdrawInput: ElementRef;
 
   constructor(
     private profileSvc: ProfileService,
@@ -76,7 +89,7 @@ export class ProfileMonitorComponent implements OnInit {
         .send({
           value: toGasprice(amount),
           from: addr,
-          gas: 42234,
+          gasPrice: GAS_DEFAULT,
         })
         .then(() => {
           alert(
@@ -93,6 +106,46 @@ export class ProfileMonitorComponent implements OnInit {
     this.gameSvc.fetchBuyPackage$(num).subscribe((resp) => {
       if (!resp) return;
       alert('Mua thành công');
+    });
+  }
+
+  onChangeWithdrawAmount(e: any) {
+    const amount = e.target.value.replace(/[^0-9\.]+/g, '') || 0;
+    this.withdrawAmout = amount * COIN_DECIMAL;
+    this.withdrawInput.nativeElement.value = amount;
+  }
+
+  onSetMaxWithdraw() {
+    const sub = this.walletSvc.wallet$.subscribe((wallet) => {
+      const amount = wallet.balance - GAS_DEFAULT;
+      this.withdrawAmout = amount;
+      this.withdrawInput.nativeElement.value = toPlainString(amount);
+    });
+    sub.unsubscribe();
+  }
+
+  onWithdraw() {
+    const result = confirm(`Bạn muốn rút ${toPlainString(this.withdrawAmout)}`);
+    if (!result) return;
+    this.walletSvc.fetchWithdraw$(this.withdrawAmout).subscribe((result) => {
+      if (!result) return;
+      this.withdrawProcessing[result.tx] = {
+        amount: toPlainString(result.amount),
+        status: false,
+      };
+
+      tsxChecker(this.signer.signer, result.tx)
+        .then((tsxResult) => {
+          this.withdrawProcessing[result.tx].status = true;
+          console.log('tsxResult', tsxResult);
+          // alert('Rút thành công');
+        })
+        .catch((err) => {
+          console.log('tsx err', err);
+          // alert('Rút tiền thất bại');
+        });
+
+      console.log(result);
     });
   }
 

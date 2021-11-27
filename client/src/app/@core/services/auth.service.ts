@@ -97,7 +97,7 @@ export class AuthService {
     messageSign: string;
   }) {
     const signature$ = defer(() =>
-      this.signer.signer$.eth.personal.sign(messageSign, addr, '')
+      this.signer.signer.eth.personal.sign(messageSign, addr, '')
     );
 
     return signature$.pipe(
@@ -128,7 +128,7 @@ export class AuthService {
           this.fetchNonce$(addr).pipe(
             concatMap((nonce) => {
               if (!nonce) return of(null);
-              return this.signer.signer$.eth.personal.sign(
+              return this.signer.signer.eth.personal.sign(
                 String(nonce),
                 addr,
                 ''

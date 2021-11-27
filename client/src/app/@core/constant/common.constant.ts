@@ -9,6 +9,7 @@ export const API = {
   myPackage: ENDPOINT + API_VERSION + 'spin/me',
   playGame: ENDPOINT + API_VERSION + 'spin/play',
   awards: ENDPOINT + API_VERSION + 'spin/awards',
+  withdraw: ENDPOINT + API_VERSION + 'wallets/withdraw',
 };
 
 export const packagePrice = 1000000000000;

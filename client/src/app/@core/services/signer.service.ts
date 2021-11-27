@@ -75,7 +75,7 @@ export class SignerService {
     return this._address$.pipe(distinctUntilChanged());
   }
 
-  get signer$() {
+  get signer() {
     return this._web3;
   }
 

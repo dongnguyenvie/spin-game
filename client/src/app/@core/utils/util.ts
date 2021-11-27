@@ -1,3 +1,5 @@
+import Web3 from 'web3';
+import { TransactionReceipt } from 'web3-core';
 import { COIN_DECIMAL } from '../constant/common.constant';
 
 export function parseJwt(token: string) {
@@ -29,4 +31,34 @@ export function toPlainString(val: number) {
 
 export function toGasprice(price: number) {
   return price * COIN_DECIMAL;
+}
+
+export function tsxChecker(
+  web3: Web3,
+  tsxHash: string
+): Promise<TransactionReceipt> {
+  const fetchTsx = () => web3.eth.getTransactionReceipt(tsxHash);
+
+  return new Promise((resolve, reject) => {
+    let count = 0;
+    const interval = setInterval(async () => {
+      if (count > 50) {
+        clearInterval(interval);
+      }
+      fetchTsx()
+        .then((result) => {
+          console.log('pool', tsxHash);
+          if (result) {
+            clearInterval(interval);
+            console.log({ result });
+            resolve(result);
+          }
+        })
+        .catch((err) => {
+          clearInterval(interval);
+          reject(err);
+        });
+      count++;
+    }, 2000);
+  });
 }

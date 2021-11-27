@@ -37,7 +37,7 @@ func (biz *buyPackageBiz) BuyPackage(ctx context.Context, user *tokenprovider.To
 	}
 
 	if wallet.Balance < common.PackagePrice {
-		return nil, common.ErrInsufficientPackage(errors.New("insufficient funds"))
+		return nil, common.ErrInsufficientFunds(errors.New("insufficient funds"))
 	}
 
 	err := biz.walletStorage.Update_balance(ctx, map[string]interface{}{"user_id": user.UserId}, -(common.PackagePrice * data.Quantity))

@@ -44,3 +44,7 @@ const (
 	PackagePrice    = 100000000000
 	PackageQuantity = 5
 )
+
+const (
+	CoinDecimal = 1e18
+)

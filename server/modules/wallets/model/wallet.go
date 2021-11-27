@@ -21,4 +21,8 @@ func (u *Wallet) GetId() int {
 	return u.Id
 }
 
+func (u *Wallet) Transfer(toAddress string) int {
+	return u.Id
+}
+
 var ()

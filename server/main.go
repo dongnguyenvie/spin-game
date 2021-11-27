@@ -33,6 +33,7 @@ func main() {
 	SecretKey := os.Getenv("SECRET_KEY")
 	InfureEndpoint := os.Getenv("INFURA_ENDPOINT")
 	SmartContractAddr := os.Getenv("CONTRACT_ADDRESS")
+	AccountPrivateKey := os.Getenv("ACCOUNT_PRIVATE_KEY")
 	port := os.Getenv("PORT")
 
 	dsn := DatabaseUsername + ":" + DatabasePassword + "@tcp(" + DatabaseHost + ":" + DatabasePort + ")/" + DatabaseName + "?charset=utf8mb4&parseTime=True&loc=Local"
@@ -49,7 +50,7 @@ func main() {
 
 	var localPubsub pubsub.PubSub = local_pubsub.NewPubSub()
 
-	appCtx := appctx.NewAppContext(db, ethClient, localPubsub, SecretKey, SmartContractAddr)
+	appCtx := appctx.NewAppContext(db, ethClient, localPubsub, SecretKey, SmartContractAddr, AccountPrivateKey)
 
 	{
 		setupInfura(appCtx)

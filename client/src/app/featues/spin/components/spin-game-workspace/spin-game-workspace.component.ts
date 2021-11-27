@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { of, switchMap, take } from 'rxjs';
 import { AuthService } from 'src/app/@core/services/auth.service';
 import { GameService } from 'src/app/@core/services/game.service';
+import { WalletService } from 'src/app/@core/services/wallet.service';
 
 const AWARDS_POSITION = [0, 9, 277, 330, 229, 330, 138, 47];
 const AWARDS_ICON = ['😊', '😝', '😍', '😎', '🍩', '🍭', '🍰', '🍬'];
@@ -16,7 +17,11 @@ export class SpinGameWorkspaceComponent implements OnInit {
   isStopping = false;
   options: string[] = [];
   result: string | null = null;
-  constructor(private gameSvc: GameService, private authSvc: AuthService) {}
+  constructor(
+    private gameSvc: GameService,
+    private authSvc: AuthService,
+    private wallSvc: WalletService
+  ) {}
 
   ngOnInit() {
     this.gameSvc.fetchAwardOptions$().subscribe((resp) => {
@@ -26,8 +31,6 @@ export class SpinGameWorkspaceComponent implements OnInit {
     });
   }
 
-  private _reset() {}
-
   get awards() {
     return this.options.map((opt, i) =>
       i % 2 === 0 ? `${opt} ${AWARDS_ICON[i]}` : `${AWARDS_ICON[i]} ${opt}`
@@ -36,14 +39,15 @@ export class SpinGameWorkspaceComponent implements OnInit {
 
   rotate() {
     const token$ = this.authSvc.token$.pipe(take(1));
+    this.gameSvc.startProcessing();
 
     token$
       .pipe(
         switchMap((token) => {
           if (!token) {
-            alert('Vui lòng login tài khoản bằng ví MetaMask')
-            return of(null)
-          };
+            alert('Vui lòng login tài khoản bằng ví MetaMask');
+            return of(null);
+          }
           this.isRunning = true;
           this.isStopping = false;
           this.result = null;
@@ -56,7 +60,10 @@ export class SpinGameWorkspaceComponent implements OnInit {
           this.isStopping = true;
           this.wheelRotation = AWARDS_POSITION[resp.index];
           this.result = resp.award + 'ETH';
-          console.log('get award', resp);
+          setTimeout(() => {
+            this.gameSvc.stopProcessing();
+            this.gameSvc.fetchMyPackage$().subscribe();
+          }, 6000);
         }, 3000);
       });
   }

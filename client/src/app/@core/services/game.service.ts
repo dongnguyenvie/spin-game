@@ -26,6 +26,7 @@ export class GameService {
   private _package$ = new BehaviorSubject<MyPackageData>(
     null as unknown as MyPackageData
   );
+  private _processing = false;
 
   constructor(private http: HttpClient, private authSvc: AuthService) {
     this._setup();
@@ -36,13 +37,17 @@ export class GameService {
     timer(0, 10000)
       .pipe(switchMap(() => token$))
       .subscribe((token) => {
-        if (!token) return;
+        if (!token || this.processing) return;
         this.fetchMyPackage$().subscribe();
       });
   }
 
   get package$() {
     return this._package$.asObservable();
+  }
+
+  get processing() {
+    return this._processing;
   }
 
   fetchPlayGame$() {
@@ -71,8 +76,24 @@ export class GameService {
   }
 
   fetchBuyPackage$(num: number) {
-    return this.http.post(API.buyPackage, {
-      quantity: num,
-    });
+    this._processing = true;
+    return this.http
+      .post(API.buyPackage, {
+        quantity: num,
+      })
+      .pipe(
+        tap(() => {
+          this.fetchMyPackage$().subscribe();
+          this._processing = false;
+        })
+      );
+  }
+
+  startProcessing(): void {
+    this._processing = true;
+  }
+
+  stopProcessing(): void {
+    this._processing = false;
   }
 }
