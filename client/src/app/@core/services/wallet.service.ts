@@ -41,7 +41,8 @@ export class WalletService {
   constructor(
     private http: HttpClient,
     private authSvc: AuthService,
-    private signer: SignerService
+    private signer: SignerService,
+    private gameSvc: GameService
   ) {
     this._setup();
   }
@@ -51,7 +52,7 @@ export class WalletService {
     timer(0, 10000)
       .pipe(switchMap(() => token$))
       .subscribe((token) => {
-        if (!token) return;
+        if (!token || this.gameSvc.processing) return;
         this.fetchMyWallet$().subscribe();
       });
   }

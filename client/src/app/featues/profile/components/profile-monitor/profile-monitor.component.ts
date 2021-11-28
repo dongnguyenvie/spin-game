@@ -16,7 +16,7 @@ import {
 } from 'src/app/@core/utils/util';
 import { ProfileService } from '../../profile.service';
 
-const GAS_DEFAULT = 42234;
+const GAS_DEFAULT = 30000000000;
 const TABS = ['Wallet'];
 @Component({
   selector: 'app-profile-monitor',
@@ -30,7 +30,10 @@ export class ProfileMonitorComponent implements OnInit {
   packages = PACKAGES;
   depositOptions = [0.00001, 0.00002, 0.00003];
 
-  withdrawProcessing: Record<string, { status: boolean; amount: string }> = {};
+  withdrawProcessing: Record<
+    string,
+    { status: boolean; amount: string; info: any }
+  > = {};
 
   tokenSub: Subscription;
   withdrawAmout = 0;
@@ -70,6 +73,10 @@ export class ProfileMonitorComponent implements OnInit {
 
   get package$() {
     return this.gameSvc.package$;
+  }
+
+  get note() {
+    return `Giá 1 lượt = ${toPlainString(packagePrice)}ETH`;
   }
 
   get token$() {
@@ -132,20 +139,20 @@ export class ProfileMonitorComponent implements OnInit {
       this.withdrawProcessing[result.tx] = {
         amount: toPlainString(result.amount),
         status: false,
+        info: null,
       };
 
       tsxChecker(this.signer.signer, result.tx)
-        .then((tsxResult) => {
+        .then((tsResult) => {
           this.withdrawProcessing[result.tx].status = true;
-          console.log('tsxResult', tsxResult);
-          // alert('Rút thành công');
+          this.withdrawProcessing[result.tx].info = tsResult;
+          console.log('transaction result', tsResult);
         })
         .catch((err) => {
-          console.log('tsx err', err);
-          // alert('Rút tiền thất bại');
+          console.log('transaction error', err);
         });
 
-      console.log(result);
+      console.log('onWithdraw', result);
     });
   }
 

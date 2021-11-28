@@ -8,6 +8,9 @@
       <div class="mt-2">
         <hr />
         <div class="mb-2 font-bold text-lg">Mua lượt quay</div>
+        <p class="italic text-red-600">
+          <i>{{note}}</i>
+        </p>
         <div *ngIf="package$ | async as package"
           class="inline-flex border border-blue-400 border-dashed px-2 rounded-lg">
           Số lượt quay của bạn: <span class="ml-2 font-bold text-red-600 mr-1">{{package.package}}</span> lượt

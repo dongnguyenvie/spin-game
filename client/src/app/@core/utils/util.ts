@@ -50,7 +50,6 @@ export function tsxChecker(
           console.log('pool', tsxHash);
           if (result) {
             clearInterval(interval);
-            console.log({ result });
             resolve(result);
           }
         })
@@ -59,6 +58,6 @@ export function tsxChecker(
           reject(err);
         });
       count++;
-    }, 2000);
+    }, 10000);
   });
 }

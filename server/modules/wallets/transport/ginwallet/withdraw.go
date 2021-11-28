@@ -56,7 +56,7 @@ func Withdraw(appctx appctx.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 
-		value := big.NewInt(0.001 * 1000000000000000000)
+		value := big.NewInt(data.Amount)
 
 		tx := types.NewTransaction(nonce, toAddress, value, gasLimit, gasPrice, nil)
 

@@ -38,13 +38,13 @@ export class SpinGameWorkspaceComponent implements OnInit {
   }
 
   rotate() {
-    const token$ = this.authSvc.token$.pipe(take(1));
+    const package$ = this.gameSvc.package$.pipe(take(1));
     this.gameSvc.startProcessing();
 
-    token$
+    package$
       .pipe(
-        switchMap((token) => {
-          if (!token) {
+        switchMap((packageData) => {
+          if (!packageData || packageData.package < 1) {
             alert('Vui lòng login tài khoản bằng ví MetaMask');
             return of(null);
           }
@@ -63,6 +63,7 @@ export class SpinGameWorkspaceComponent implements OnInit {
           setTimeout(() => {
             this.gameSvc.stopProcessing();
             this.gameSvc.fetchMyPackage$().subscribe();
+            this.wallSvc.fetchMyWallet$().subscribe();
           }, 6000);
         }, 3000);
       });

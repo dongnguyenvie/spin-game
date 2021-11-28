@@ -32,11 +32,11 @@ func (biz *withdrawBiz) Withdraw(ctx context.Context, user *tokenprovider.TokenP
 		return common.ErrInsufficientFunds(errors.New("amount must be greather than 0"))
 	}
 
-	if wallet.Balance <= data.Amount {
+	if wallet.Balance <= int(data.Amount) {
 		return common.ErrInsufficientFunds(errors.New("wallet is out of money"))
 	}
 
-	err := biz.walletStorage.Update_balance(ctx, map[string]interface{}{"id": wallet.Id}, -data.Amount)
+	err := biz.walletStorage.Update_balance(ctx, map[string]interface{}{"id": wallet.Id}, -int(data.Amount))
 
 	if err != nil {
 		return err
