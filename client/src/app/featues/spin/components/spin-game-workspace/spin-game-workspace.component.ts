@@ -45,7 +45,7 @@ export class SpinGameWorkspaceComponent implements OnInit {
       .pipe(
         switchMap((packageData) => {
           if (!packageData || packageData.package < 1) {
-            alert('Vui lòng login tài khoản bằng ví MetaMask');
+            alert('Tài khoản của bạn chưa đăng nhập hoặc không đủ số lượt quay');
             return of(null);
           }
           this.isRunning = true;
