@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { of, switchMap, take } from 'rxjs';
 import { AuthService } from 'src/app/@core/services/auth.service';
 import { GameService } from 'src/app/@core/services/game.service';
@@ -29,6 +29,7 @@ export class SpinGameWorkspaceComponent implements OnInit {
       this.options = resp.awards.map((d) => d + 'ETH');
       console.log(resp);
     });
+    console.log('xxxxxx', this);
   }
 
   get awards() {
@@ -45,7 +46,9 @@ export class SpinGameWorkspaceComponent implements OnInit {
       .pipe(
         switchMap((packageData) => {
           if (!packageData || packageData.package < 1) {
-            alert('Tài khoản của bạn chưa đăng nhập hoặc không đủ số lượt quay');
+            alert(
+              'Tài khoản của bạn chưa đăng nhập hoặc không đủ số lượt quay'
+            );
             return of(null);
           }
           this.isRunning = true;
@@ -67,5 +70,33 @@ export class SpinGameWorkspaceComponent implements OnInit {
           }, 6000);
         }, 3000);
       });
+  }
+
+  ngOnChanges() {
+    console.log('ngOnChanges');
+  }
+
+  ngDoCheck() {
+    console.log('ngDoCheck');
+  }
+
+  ngAfterContentInit() {
+    console.log('ngAfterContentInit');
+  }
+
+  ngAfterContentChecked() {
+    console.log('ngAfterContentChecked');
+  }
+
+  ngAfterViewInit() {
+    console.log('ngAfterViewInit');
+  }
+
+  ngAfterViewChecked() {
+    console.log('ngAfterViewChecked');
+  }
+
+  ngOnDestroy() {
+    console.log('ngOnDestroy');
   }
 }

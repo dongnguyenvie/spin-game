@@ -1,4 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { map, Subscriber, Subscription, take } from 'rxjs';
 import { packagePrice, PACKAGES } from 'src/app/@core/constant/common.constant';
 import { VarDirective } from 'src/app/@core/directives/ng-var.directive';

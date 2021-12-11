@@ -49,12 +49,12 @@ export class WalletService {
 
   private _setup() {
     const token$ = this.authSvc.token$.pipe(take(1));
-    timer(0, 10000)
-      .pipe(switchMap(() => token$))
-      .subscribe((token) => {
-        if (!token || this.gameSvc.processing) return;
-        this.fetchMyWallet$().subscribe();
-      });
+    // timer(0, 10000)
+    //   .pipe(switchMap(() => token$))
+    //   .subscribe((token) => {
+    //     if (!token || this.gameSvc.processing) return;
+    //     this.fetchMyWallet$().subscribe();
+    //   });
   }
 
   get wallet$() {

@@ -1,4 +1,9 @@
-import { ChangeDetectorRef, Injectable, NgZone } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Injectable,
+  NgZone,
+} from '@angular/core';
 import Web3 from 'web3';
 import {
   BehaviorSubject,
@@ -34,10 +39,10 @@ export class SignerService {
   private _contract: SpinProccessor;
 
   constructor(private ngZone: NgZone) {
-    this._setup();
+    // this._setup();
   }
 
-  private _setup(): void {
+  setup(cdr: ChangeDetectorRef): void {
     window.addEventListener('load', async () => {
       const accounts$ = defer(
         () => window.ethereum.send('eth_accounts') as Promise<EthAccounts>
@@ -62,6 +67,7 @@ export class SignerService {
             addr !== accounts[0]
           ) {
             this._address$.next(accounts[0]);
+            cdr.detectChanges();
           }
         });
     });
