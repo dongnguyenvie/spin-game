@@ -15,12 +15,13 @@
 
 ### SNAPSHOTS
 
-[![spin game](https://youtu.be/1UfIbg-erOw)](/assets/1.png)
-[![spin game](https://youtu.be/1UfIbg-erOw)](/assets/2.png)
-[![spin game](https://youtu.be/1UfIbg-erOw)](/assets/3.png)
-[![spin game](https://youtu.be/1UfIbg-erOw)](/assets/4.png)
-[![spin game](https://youtu.be/1UfIbg-erOw)](/assets/5.png)
-[![spin game](https://youtu.be/1UfIbg-erOw)](/assets/6.png)
+<!-- https://youtu.be/1UfIbg-erOw -->
+[![Demo CountPages alpha](assets/1.png)](https://youtu.be/1UfIbg-erOw)
+[![Demo CountPages alpha](assets/2.png)](https://youtu.be/1UfIbg-erOw)
+[![Demo CountPages alpha](assets/3.png)](https://youtu.be/1UfIbg-erOw)
+[![Demo CountPages alpha](assets/4.png)](https://youtu.be/1UfIbg-erOw)
+[![Demo CountPages alpha](assets/5.png)](https://youtu.be/1UfIbg-erOw)
+[![Demo CountPages alpha](assets/6.png)](https://youtu.be/1UfIbg-erOw)
 
 ```
 Copy .env.example into .env
